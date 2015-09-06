@@ -16,11 +16,12 @@ Image* RayTracer::raytrace(Scene* scene) {
     h = scene->height;
     halfW = w * 0.5f;
     halfH = h * 0.5f;
-    tanHalfFOVX = tanf((float) (scene->camera->fovx * M_PI / 360.f));
-    tanHalfFOVY = tanf((float) (scene->camera->fovy * M_PI / 360.f));
+    float toRadian = (float) (M_PI / 360.f);
+    tanFOVX = tanf(scene->camera->fovx * toRadian);
+    tanFOVY = tanf(scene->camera->fovy * toRadian);
     Image* image = new Image(w, h);
-    for (unsigned y = 0; y < h; y++) {
-        for (unsigned x = 0; x < w; x++) {
+    for (unsigned x = 0; x < w; x++) {
+        for (unsigned y = 0; y < h; y++) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
             Intersection* intersection = getIntersection(ray, scene);
             unsigned color = findColor(intersection);
@@ -39,24 +40,16 @@ Image* RayTracer::raytrace(Scene* scene) {
 }
 
 Ray* RayTracer::getRayThoughPixel(Camera* camera, float x, float y) {
-    /*const float smallerDim = ((w < h) ? w : h);
-    float zoom = 1;
-    const double largeZoom  = zoom * smallerDim;
-    vec3 direction(0.0, 0.0, -1.0);
-    direction.x = (float) ((x - halfW) / largeZoom);
-    direction.y = (float) ((halfH - y) / largeZoom);*/
-
     const float U = (x - halfW) / halfW;
     const float V = (halfH - y) / halfH;
-    float alpha = tanHalfFOVX * U;
-    float beta = tanHalfFOVY * V;
+    float alpha = tanFOVX * U;
+    float beta = tanFOVY * V;
 
     Ray* ray = new Ray();
     ray->pos = camera->pos;
     vec3 rayDir = alpha * camera->right + beta * camera->up - camera->forward;
     vec3 rayDirNorm = glm::normalize(rayDir);
     ray->dir = rayDirNorm;
-//    ray->dir = direction;
     return ray;
 }
 
@@ -87,7 +80,7 @@ float RayTracer::intersect(Ray* ray, Object* object) {
 }
 
 void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) {
-    const unsigned int i = y * 3 * h + x * 3;
+    const unsigned int i = y * 3 * w + x * 3;
     image->data[i + 0] = (unsigned char) (color & 0xFF);
     image->data[i + 1] = (unsigned char) (color >> 8 & 0xFF);
     image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);

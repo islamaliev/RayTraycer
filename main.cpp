@@ -13,9 +13,6 @@ int main(int argc, const char * argv[]) {
     TextParser parser;
     SceneData* const sceneData = parser.parse(argv[1]);
 
-    sceneData->width = 480;
-    sceneData->height = 480;
-
     SceneInitializer initializer;
     Scene* scene = initializer.create(sceneData);
 

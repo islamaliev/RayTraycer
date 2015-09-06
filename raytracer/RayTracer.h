@@ -30,7 +30,7 @@ private:
     int h;
     float halfW;
     float halfH;
-    float tanHalfFOVX;
-    float tanHalfFOVY;
+    float tanFOVX;
+    float tanFOVY;
 
 };

@@ -28,8 +28,7 @@ void SceneInitializer::initializeCamera() {
     glm::vec3 pos(cameraData.lookFrom[0], cameraData.lookFrom[1], cameraData.lookFrom[2]);
     glm::vec3 lookAt(cameraData.lookAt[0], cameraData.lookAt[1], cameraData.lookAt[2]);
     glm::vec3 up(cameraData.up[0], cameraData.up[1], cameraData.up[2]);
-    scene->camera = new Camera(pos, up, lookAt, cameraData.fovy, 1);
-//    scene->camera = new Camera(pos, up, lookAt, cameraData.fovy, sceneData->width / (float) sceneData->height);
+    scene->camera = new Camera(pos, up, lookAt, cameraData.fovy, sceneData->width / (float) sceneData->height);
 }
 
 void SceneInitializer::initializeProperties() {

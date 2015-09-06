@@ -17,8 +17,8 @@ Image* RayTracer::raytrace(Scene* scene) {
     halfW = w * 0.5f;
     halfH = h * 0.5f;
     float toRadian = (float) (M_PI / 360.f);
-    tanFOVX = tanf(scene->camera->fovx * toRadian);
     tanFOVY = tanf(scene->camera->fovy * toRadian);
+    tanFOVX = tanFOVY * w / h;
     Image* image = new Image(w, h);
     for (unsigned x = 0; x < w; x++) {
         for (unsigned y = 0; y < h; y++) {

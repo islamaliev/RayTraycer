@@ -26,11 +26,12 @@ private:
 
     void pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y);
 
+    unsigned int convertToColor(float chanels[3]);
+
     int w;
     int h;
     float halfW;
     float halfH;
     float tanFOVX;
     float tanFOVY;
-
 };

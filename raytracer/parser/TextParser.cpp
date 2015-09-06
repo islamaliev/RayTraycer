@@ -273,7 +273,7 @@ void TextParser::parseVertexnormal(std::stringstream& s) {
 void TextParser::parseTri(std::stringstream& s) {
     readValues(s, 3, values);
     TriangleData* tri = new TriangleData((unsigned) values[0],(unsigned)  values[1],(unsigned)  values[2]);
-    *tri->ambient = *ambient;
+    std::copy(std::begin(ambient), std::end(ambient), std::begin(tri->ambient));
     sceneData->triangles.push_back(tri);
 }
 

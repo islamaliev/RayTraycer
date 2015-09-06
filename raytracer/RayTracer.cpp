@@ -25,12 +25,6 @@ Image* RayTracer::raytrace(Scene* scene) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
             Intersection* intersection = getIntersection(ray, scene);
             unsigned color = findColor(intersection);
-            if (intersection->dist > 0) {
-                color = 0xFF0000;
-            } else {
-                color = 0;
-            }
-
             pushColor(image, color, x, y);
         }
     }
@@ -72,7 +66,11 @@ Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) {
 }
 
 unsigned RayTracer::findColor(Intersection* intersection) {
-    return 0;
+    if (intersection->dist <= 0) {
+        return 0;
+    }
+    unsigned color = convertToColor(intersection->object->ambient);
+    return color;
 }
 
 float RayTracer::intersect(Ray* ray, Object* object) {
@@ -84,4 +82,15 @@ void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsi
     image->data[i + 0] = (unsigned char) (color & 0xFF);
     image->data[i + 1] = (unsigned char) (color >> 8 & 0xFF);
     image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);
+}
+
+unsigned int RayTracer::convertToColor(float chanels[3]) {
+    unsigned char mask = 0xFF;
+    unsigned char r = (unsigned char) (chanels[0] * mask);
+    unsigned char g = (unsigned char) (chanels[1] * mask);
+    unsigned char b = (unsigned char) (chanels[2] * mask);
+    unsigned color(b);
+    color |= r << 16;
+    color |= g << 8;
+    return color;
 }

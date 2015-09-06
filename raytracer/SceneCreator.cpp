@@ -21,7 +21,6 @@ void SceneInitializer::initializeObjects() {
         const glm::vec3& v3 = sceneData->verticies[triangleData->indecies[2]];
         Triangle* triangle = new Triangle(&v1, &v2, &v3);
         std::copy(std::begin(triangleData->ambient), std::end(triangleData->ambient), std::begin(triangle->ambient));
-//        *(triangle->ambient) = *(triangleData->ambient);
         scene->objects.push_back(triangle);
     }
 }

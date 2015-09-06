@@ -9,30 +9,35 @@ Triangle::Triangle(const vec3* v1, const vec3* v2, const vec3* v3) {
 }
 
 float Triangle::intersect(Ray* ray) {
-    const vec3& side1 = *verticies[2] - *verticies[0];
-    const vec3& side2 = *verticies[1] - *verticies[0];
-    vec3 n = glm::normalize(glm::cross(side1, side2));
+    vec4 rayPos(ray->pos, 1);
+    vec4 rayDir(ray->dir, 0);
 
-    float d = glm::dot(ray->dir, n);
+    mat4 invM = glm::inverse(transform);
+
+    rayPos = invM * rayPos;
+    rayDir = invM * rayDir;
+
+    const vec3& side1(*verticies[2] - *verticies[0]);
+    const vec3& side2(*verticies[1] - *verticies[0]);
+    vec4 n = glm::normalize(vec4(glm::cross(side1, side2), 0));
+
+    float d = glm::dot(rayDir, n);
     if (d == 0) {
         return 0;
     }
 
-    const vec3& a = *verticies[0];
-    float t = (glm::dot(a, n) - glm::dot(ray->pos, n)) / d;
+    vec4 a(*verticies[0], 0);
 
-    vec3 p = ray->pos + ray->dir * t;
-    if (isPointInTriangle(p, *verticies[0], *verticies[1], *verticies[2])) {
-        return t;
+    float t = (glm::dot(a, n) - glm::dot(rayPos, n)) / d;
+
+    vec4 p = rayPos + rayDir * t;
+    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[1], *verticies[2]))
+    {
+        p = transform * p;
+        return glm::length(p);
     }
 
     return 0;
-}
-
-bool Triangle::isOnSameSide(const vec3& p1, const vec3& p2, const vec3& a, const vec3& b) {
-    vec3 cp1 = glm::cross(b - a, p1 - a);
-    vec3 cp2 = glm::cross(b - a, p2 - a);
-    return glm::dot(cp1, cp2) >= 0;
 }
 
 bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, const vec3& c) {
@@ -51,7 +56,4 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
     float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
     return (u >= 0) && (v >= 0) && (u + v < 1);
-
-
-//    return isOnSameSide(p, a, b, c) && isOnSameSide(p, b, a, c) && isOnSameSide(p, c, a, b);
 }

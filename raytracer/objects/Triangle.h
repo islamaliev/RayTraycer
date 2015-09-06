@@ -4,8 +4,8 @@
 #include <vector>
 #include "Object.h"
 #include "glm/glm.hpp"
+#include "Camera.h"
 
-typedef glm::vec3 vec3;
 
 class Triangle : public Object {
 public:
@@ -16,7 +16,9 @@ public:
     std::vector<const vec3*> verticies;
 
 private:
-    bool isOnSameSide(const vec3& p1, const vec3& p2, const vec3& a, const vec3& b);
+    typedef glm::vec3 vec3;
+    typedef glm::vec4 vec4;
+    typedef glm::mat4 mat4;
 
     bool isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, const vec3& c);
 };

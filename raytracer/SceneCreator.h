@@ -1,6 +1,9 @@
 #ifndef HW3_SCENEINITIALIZER_H
 #define HW3_SCENEINITIALIZER_H
 
+#include "ObjectData.h"
+#include "Object.h"
+
 class Scene;
 class SceneData;
 
@@ -27,10 +30,12 @@ private:
 
     void initializeSpheres();
 
+    void initializeProperties();
+
+    void processAndAdd(ObjectData* data, Object* object) const;
+
     Scene* scene;
     SceneData* sceneData;
-
-    void initializeProperties();
 };
 
 

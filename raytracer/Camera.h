@@ -16,7 +16,6 @@ public:
         right = glm::normalize(glm::cross(upVec, forward));
         up = glm::cross(forward, right);
         this->fovy = fovy;
-        m = glm::lookAt(pos, lookAt, upVec);
     }
 
     vec3 pos;
@@ -24,5 +23,4 @@ public:
     vec3 right;
     vec3 up;
     float fovy;
-    mat4 m;
 };

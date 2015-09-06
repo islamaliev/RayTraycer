@@ -28,8 +28,8 @@ void SceneInitializer::initializeCamera() {
 }
 
 void SceneInitializer::initializeProperties() {
-    scene->width = sceneData->width;
-    scene->height = sceneData->height;
+    scene->width = sceneData->width / 2;
+    scene->height = sceneData->height / 2;
 }
 
 void SceneInitializer::initializeTriangles() {
@@ -38,9 +38,7 @@ void SceneInitializer::initializeTriangles() {
         const glm::vec3& v1 = sceneData->verticies[data->indecies[0]];
         const glm::vec3& v2 = sceneData->verticies[data->indecies[1]];
         const glm::vec3& v3 = sceneData->verticies[data->indecies[2]];
-        Triangle* triangle = new Triangle(&v1, &v2, &v3);
-        std::copy(data->ambient, data->ambient + 3, triangle->ambient);
-        scene->objects.push_back(triangle);
+        processAndAdd(data, new Triangle(&v1, &v2, &v3));
     }
 }
 
@@ -48,7 +46,12 @@ void SceneInitializer::initializeSpheres() {
     for (auto it = sceneData->spheres.begin(); it != sceneData->spheres.end(); it++) {
         SphereData* const& data = *it;
         Sphere* sphere = new Sphere(glm::vec3(data->position[0], data->position[1], data->position[2]), data->radius);
-        std::copy(data->ambient, data->ambient + 3, sphere->ambient);
-        scene->objects.push_back(sphere);
+        processAndAdd(data, sphere);
     }
+}
+
+void SceneInitializer::processAndAdd(ObjectData* data, Object* object) const {
+    std::copy(data->ambient, data->ambient + 3, object->ambient);
+    object->transform = data->transform;
+    scene->objects.push_back(object);
 }

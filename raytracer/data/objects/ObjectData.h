@@ -7,7 +7,7 @@
 
 struct ObjectData {
     ObjectData()
-            : transform(1.f)
+        : transform(1.f)
     {};
 
     glm::mat4 transform;

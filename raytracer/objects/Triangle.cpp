@@ -27,10 +27,10 @@ float Triangle::intersect(Ray* ray) {
 
     float t = (glm::dot(a, n) - glm::dot(rayPos, n)) / d;
 
-    vec4 p = rayPos + rayDir * t;
+    vec4 p = rayPos + (rayDir * t);
     if (isPointInTriangle(vec3(p), *verticies[0], *verticies[1], *verticies[2]))
     {
-        p = getTransform() * p;
+        p = ray->pos - getTransform() * p;
         return glm::length(p);
     }
 

@@ -189,8 +189,8 @@ void TextParser::initInstructionsMap() {
 
 void TextParser::parseSize(std::stringstream& s) {
     readValues(s, 2);
-    sceneData->width = (int) values[0];
-    sceneData->height = (int) values[1];
+    sceneData->width = (unsigned) values[0];
+    sceneData->height = (unsigned) values[1];
 }
 
 void TextParser::parseMaxdepth(std::stringstream& s) {
@@ -217,7 +217,7 @@ void TextParser::parseCamera(std::stringstream& s) {
 
 void TextParser::parseSphere(std::stringstream& s) {
     readValues(s, 4);
-    SphereData* sphere = new SphereData(values);
+    SphereData* sphere = new SphereData(values, values[3]);
     std::copy(ambient, ambient + 3, sphere->ambient);
     sceneData->spheres.push_back(sphere);
 }

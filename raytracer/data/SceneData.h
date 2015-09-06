@@ -10,8 +10,8 @@
 #include "SphereData.h"
 
 struct SceneData {
-    int width;
-    int height;
+    unsigned width;
+    unsigned height;
     int maxDepth;
     std::string outputFile;
 

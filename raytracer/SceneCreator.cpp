@@ -3,6 +3,7 @@
 #include "SceneData.h"
 #include "Triangle.h"
 #include "Camera.h"
+#include "Sphere.h"
 
 Scene* SceneInitializer::create(SceneData* sceneData) {
     this->sceneData = sceneData;
@@ -14,15 +15,8 @@ Scene* SceneInitializer::create(SceneData* sceneData) {
 }
 
 void SceneInitializer::initializeObjects() {
-    for (auto it = sceneData->triangles.begin(); it != sceneData->triangles.end(); it++) {
-        TriangleData* const& triangleData = *it;
-        const glm::vec3& v1 = sceneData->verticies[triangleData->indecies[0]];
-        const glm::vec3& v2 = sceneData->verticies[triangleData->indecies[1]];
-        const glm::vec3& v3 = sceneData->verticies[triangleData->indecies[2]];
-        Triangle* triangle = new Triangle(&v1, &v2, &v3);
-        std::copy(std::begin(triangleData->ambient), std::end(triangleData->ambient), std::begin(triangle->ambient));
-        scene->objects.push_back(triangle);
-    }
+    initializeTriangles();
+    initializeSpheres();
 }
 
 void SceneInitializer::initializeCamera() {
@@ -36,4 +30,25 @@ void SceneInitializer::initializeCamera() {
 void SceneInitializer::initializeProperties() {
     scene->width = sceneData->width;
     scene->height = sceneData->height;
+}
+
+void SceneInitializer::initializeTriangles() {
+    for (auto it = sceneData->triangles.begin(); it != sceneData->triangles.end(); it++) {
+        TriangleData* const& data = *it;
+        const glm::vec3& v1 = sceneData->verticies[data->indecies[0]];
+        const glm::vec3& v2 = sceneData->verticies[data->indecies[1]];
+        const glm::vec3& v3 = sceneData->verticies[data->indecies[2]];
+        Triangle* triangle = new Triangle(&v1, &v2, &v3);
+        std::copy(data->ambient, data->ambient + 3, triangle->ambient);
+        scene->objects.push_back(triangle);
+    }
+}
+
+void SceneInitializer::initializeSpheres() {
+    for (auto it = sceneData->spheres.begin(); it != sceneData->spheres.end(); it++) {
+        SphereData* const& data = *it;
+        Sphere* sphere = new Sphere(glm::vec3(data->position[0], data->position[1], data->position[2]), data->radius);
+        std::copy(data->ambient, data->ambient + 3, sphere->ambient);
+        scene->objects.push_back(sphere);
+    }
 }

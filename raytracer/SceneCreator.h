@@ -23,6 +23,10 @@ private:
 
     void initializeCamera();
 
+    void initializeTriangles();
+
+    void initializeSpheres();
+
     Scene* scene;
     SceneData* sceneData;
 

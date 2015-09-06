@@ -8,9 +8,14 @@ float Sphere::intersect(Ray* ray) {
     // b = 2 * P1 * (P0 - C)
     // c = (P0 - C) * (P0 - C) - r ^ 2
     // D = b ^ 2 - 4 * a * c
-    glm::vec3 diff = ray->pos - position;
-    float a = glm::dot(ray->dir, ray->dir);
-    float b = 2 * glm::dot(ray->dir, diff);
+    const mat4& invM = getInverseTransform();
+
+    vec4 rayPos = invM * ray->pos;
+    vec4 rayDir = invM * ray->dir;
+
+    glm::vec4 diff = rayPos - position;
+    float a = glm::dot(rayDir, rayDir);
+    float b = 2 * glm::dot(rayDir, diff);
     float c = glm::dot(diff, diff) - powf(radius, 2);
     float D = powf(b, 2) - 4 * a * c;
     if (D < 0) {
@@ -23,5 +28,8 @@ float Sphere::intersect(Ray* ray) {
     float t1 = (-b - sqD) / (2 * a);
     float t2 = (-b + sqD) / (2 * a);
 
-    return t1 < t2 ? t1 : t2;
+    float t = t1 < t2 ? t1 : t2;
+    vec4 p = rayPos + rayDir * t;
+    p = getTransform() * p;
+    return glm::length(p);
 }

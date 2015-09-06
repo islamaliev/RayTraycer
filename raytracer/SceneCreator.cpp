@@ -52,6 +52,6 @@ void SceneInitializer::initializeSpheres() {
 
 void SceneInitializer::processAndAdd(ObjectData* data, Object* object) const {
     std::copy(data->ambient, data->ambient + 3, object->ambient);
-    object->transform = data->transform;
+    object->setTransform(data->transform);
     scene->objects.push_back(object);
 }

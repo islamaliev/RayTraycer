@@ -8,14 +8,14 @@
 class Sphere : public Object {
 public:
     Sphere(glm::vec3 pos, float radius)
-        : position(pos)
+        : position(pos, 1)
         , radius(radius)
     {}
 
 
     float intersect(Ray* ray) override;
 
-    glm::vec3 position;
+    glm::vec4 position;
     float radius;
 };
 

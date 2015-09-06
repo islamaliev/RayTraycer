@@ -40,10 +40,10 @@ Ray* RayTracer::getRayThoughPixel(Camera* camera, float x, float y) {
     float beta = tanFOVY * V;
 
     Ray* ray = new Ray();
-    ray->pos = camera->pos;
+    ray->pos = vec4(camera->pos, 1);
     vec3 rayDir = alpha * camera->right + beta * camera->up - camera->forward;
     vec3 rayDirNorm = glm::normalize(rayDir);
-    ray->dir = rayDirNorm;
+    ray->dir = vec4(rayDirNorm, 0);
     return ray;
 }
 

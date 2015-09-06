@@ -4,6 +4,6 @@
 #include "glm/glm.hpp"
 
 struct Ray {
-    glm::vec3 pos;
-    glm::vec3 dir;
+    glm::vec4 pos;
+    glm::vec4 dir;
 };

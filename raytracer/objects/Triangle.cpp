@@ -9,13 +9,10 @@ Triangle::Triangle(const vec3* v1, const vec3* v2, const vec3* v3) {
 }
 
 float Triangle::intersect(Ray* ray) {
-    vec4 rayPos(ray->pos, 1);
-    vec4 rayDir(ray->dir, 0);
+    mat4 invM = getInverseTransform();
 
-    mat4 invM = glm::inverse(transform);
-
-    rayPos = invM * rayPos;
-    rayDir = invM * rayDir;
+    vec4 rayPos = invM * ray->pos;
+    vec4 rayDir = invM * ray->dir;
 
     const vec3& side1(*verticies[2] - *verticies[0]);
     const vec3& side2(*verticies[1] - *verticies[0]);
@@ -33,7 +30,7 @@ float Triangle::intersect(Ray* ray) {
     vec4 p = rayPos + rayDir * t;
     if (isPointInTriangle(vec3(p), *verticies[0], *verticies[1], *verticies[2]))
     {
-        p = transform * p;
+        p = getTransform() * p;
         return glm::length(p);
     }
 

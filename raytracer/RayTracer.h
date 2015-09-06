@@ -13,7 +13,7 @@ class RayTracer {
 public:
     RayTracer(){}
 
-    Image* raytrace(Scene* scene, int width, int height);
+    Image* raytrace(Scene* scene);
 
 private:
     Ray* getRayThoughPixel(Camera* camera, float x, float y);

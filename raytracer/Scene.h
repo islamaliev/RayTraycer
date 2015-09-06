@@ -8,6 +8,8 @@ class Camera;
 
 class Scene {
 public:
+    unsigned width;
+    unsigned height;
     std::vector<Object*> objects;
     Camera* camera;
 };

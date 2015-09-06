@@ -19,12 +19,14 @@ public:
     Scene* create(SceneData* sceneData);
 
 private:
-    void initializeScene();
+    void initializeObjects();
 
     void initializeCamera();
 
     Scene* scene;
     SceneData* sceneData;
+
+    void initializeProperties();
 };
 
 

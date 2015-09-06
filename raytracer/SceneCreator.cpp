@@ -7,12 +7,13 @@
 Scene* SceneInitializer::create(SceneData* sceneData) {
     this->sceneData = sceneData;
     scene = new Scene();
-    initializeScene();
+    initializeProperties();
+    initializeObjects();
     initializeCamera();
     return scene;
 }
 
-void SceneInitializer::initializeScene() {
+void SceneInitializer::initializeObjects() {
     for (auto it = sceneData->indecies.begin(); it != sceneData->indecies.end(); it += 3) {
         const glm::vec3& v1 = sceneData->verticies[*it];
         const glm::vec3& v2 = sceneData->verticies[*(it + 1)];
@@ -29,4 +30,9 @@ void SceneInitializer::initializeCamera() {
     glm::vec3 up(cameraData.up[0], cameraData.up[1], cameraData.up[2]);
     scene->camera = new Camera(pos, up, lookAt, cameraData.fovy, 1);
 //    scene->camera = new Camera(pos, up, lookAt, cameraData.fovy, sceneData->width / (float) sceneData->height);
+}
+
+void SceneInitializer::initializeProperties() {
+    scene->width = sceneData->width;
+    scene->height = sceneData->height;
 }

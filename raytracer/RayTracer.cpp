@@ -11,16 +11,16 @@
 int totalIntersections = 0;
 int totalIntersectionChecks = 0;
 
-Image* RayTracer::raytrace(Scene* scene, int width, int height) {
-    w = width;
-    h = height;
+Image* RayTracer::raytrace(Scene* scene) {
+    w = scene->width;
+    h = scene->height;
     halfW = w * 0.5f;
     halfH = h * 0.5f;
     tanHalfFOVX = tanf((float) (scene->camera->fovx * M_PI / 360.f));
     tanHalfFOVY = tanf((float) (scene->camera->fovy * M_PI / 360.f));
-    Image* image = new Image(width, height);
-    for (unsigned y = 0; y < height; y++) {
-        for (unsigned x = 0; x < width; x++) {
+    Image* image = new Image(w, h);
+    for (unsigned y = 0; y < h; y++) {
+        for (unsigned x = 0; x < w; x++) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
             Intersection* intersection = getIntersection(ray, scene);
             unsigned color = findColor(intersection);

@@ -13,7 +13,11 @@ class TextParser {
 public:
     TextParser()
             : sceneData(nullptr)
-    {}
+    {
+        ambient[0] = 0.2f;
+        ambient[1] = 0.2f;
+        ambient[2] = 0.2f;
+    }
 
     SceneData* parse(const char* filename);
 
@@ -62,6 +66,7 @@ private:
 
     float values[10];
     std::stack<mat4> transforms;
+    float ambient[3];
     std::unordered_map<std::string, ParseFunc> instructionsMap;
 
     SceneData* sceneData;

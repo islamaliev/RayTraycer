@@ -15,7 +15,6 @@ public:
         forward = glm::normalize(pos - lookAt);
         right = glm::normalize(glm::cross(upVec, forward));
         up = glm::cross(forward, right);
-//        this->fovy = (float) (fovy * M_PI / 360.f);
         this->fovy = fovy;
         this->fovx = this->fovy * ratio;
         m = glm::lookAt(pos, lookAt, upVec);

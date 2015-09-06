@@ -6,6 +6,7 @@
 #include <vector>
 #include "glm/glm.hpp"
 #include "CameraData.h"
+#include "TriangleData.h"
 
 struct SceneData {
     int width;
@@ -18,7 +19,7 @@ struct SceneData {
     int maxVerticies;
     int maxVerNorms;
     std::vector<glm::vec3> verticies;
-    std::vector<unsigned> indecies;
+    std::vector<TriangleData*> triangles;
 };
 
 

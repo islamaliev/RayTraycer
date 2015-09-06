@@ -14,11 +14,14 @@ Scene* SceneInitializer::create(SceneData* sceneData) {
 }
 
 void SceneInitializer::initializeObjects() {
-    for (auto it = sceneData->indecies.begin(); it != sceneData->indecies.end(); it += 3) {
-        const glm::vec3& v1 = sceneData->verticies[*it];
-        const glm::vec3& v2 = sceneData->verticies[*(it + 1)];
-        const glm::vec3& v3 = sceneData->verticies[*(it + 2)];
+    for (auto it = sceneData->triangles.begin(); it != sceneData->triangles.end(); it++) {
+        TriangleData* const& triangleData = *it;
+        const glm::vec3& v1 = sceneData->verticies[triangleData->indecies[0]];
+        const glm::vec3& v2 = sceneData->verticies[triangleData->indecies[1]];
+        const glm::vec3& v3 = sceneData->verticies[triangleData->indecies[2]];
         Triangle* triangle = new Triangle(&v1, &v2, &v3);
+        std::copy(std::begin(triangleData->ambient), std::end(triangleData->ambient), std::begin(triangle->ambient));
+//        *(triangle->ambient) = *(triangleData->ambient);
         scene->objects.push_back(triangle);
     }
 }

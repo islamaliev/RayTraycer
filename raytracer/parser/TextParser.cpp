@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "SceneData.h"
+#include "TriangleData.h"
 
 void TextParser::matrixTransform(float* values)
 {
@@ -271,9 +272,9 @@ void TextParser::parseVertexnormal(std::stringstream& s) {
 
 void TextParser::parseTri(std::stringstream& s) {
     readValues(s, 3, values);
-    sceneData->indecies.push_back((unsigned) values[0]);
-    sceneData->indecies.push_back((unsigned) values[1]);
-    sceneData->indecies.push_back((unsigned) values[2]);
+    TriangleData* tri = new TriangleData((unsigned) values[0],(unsigned)  values[1],(unsigned)  values[2]);
+    *tri->ambient = *ambient;
+    sceneData->triangles.push_back(tri);
 }
 
 void TextParser::parseTrinormal(std::stringstream& s) {
@@ -313,7 +314,10 @@ void TextParser::parseAttenuation(std::stringstream& s) {
 }
 
 void TextParser::parseAmbient(std::stringstream& s) {
-
+    readValues(s, 3, values);
+    ambient[0] = values[0];
+    ambient[1] = values[1];
+    ambient[2] = values[2];
 }
 
 void TextParser::parseDiffuse(std::stringstream& s) {

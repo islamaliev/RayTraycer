@@ -6,22 +6,22 @@
 #include "Intersection.h"
 #include "Object.h"
 #include "Camera.h"
-#include "Ray.h"
+#include "Triangle.h"
 
 int totalIntersections = 0;
 int totalIntersectionChecks = 0;
 
-Image* RayTracer::raytrace(Camera* camera, Scene* scene, int width, int height) {
+Image* RayTracer::raytrace(Scene* scene, int width, int height) {
     w = width;
     h = height;
     halfW = w * 0.5f;
     halfH = h * 0.5f;
-    tanHalfFOVX = tanf((float) (camera->fovx * M_PI / 360.f));
-    tanHalfFOVY = tanf((float) (camera->fovy * M_PI / 360.f));
+    tanHalfFOVX = tanf((float) (scene->camera->fovx * M_PI / 360.f));
+    tanHalfFOVY = tanf((float) (scene->camera->fovy * M_PI / 360.f));
     Image* image = new Image(width, height);
     for (unsigned y = 0; y < height; y++) {
         for (unsigned x = 0; x < width; x++) {
-            Ray* ray = getRayThoughPixel(camera, x + 0.5f, y + 0.5f);
+            Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
             Intersection* intersection = getIntersection(ray, scene);
             unsigned color = findColor(intersection);
             if (intersection->dist > 0) {

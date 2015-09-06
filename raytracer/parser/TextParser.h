@@ -2,6 +2,7 @@
 #define HW3_STRINGPARSER_H
 
 
+#include <string>
 #include <stack>
 #include <unordered_map>
 #include "glm/glm.hpp"
@@ -10,6 +11,10 @@ class SceneData;
 
 class TextParser {
 public:
+    TextParser()
+            : sceneData(nullptr)
+    {}
+
     SceneData* parse(const char* filename);
 
 private:

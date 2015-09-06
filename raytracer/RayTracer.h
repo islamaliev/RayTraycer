@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Ray.h"
+
 class Image;
 class Camera;
 class Scene;
@@ -9,7 +11,9 @@ class Object;
 
 class RayTracer {
 public:
-    Image* raytrace(Camera* camera, Scene* scene, int width, int height);
+    RayTracer(){}
+
+    Image* raytrace(Scene* scene, int width, int height);
 
 private:
     Ray* getRayThoughPixel(Camera* camera, float x, float y);

@@ -189,34 +189,34 @@ void TextParser::parseLine(const std::string& line)
 }
 
 bool TextParser::isEmptyOrComment(const std::string& line) const {
-    return (line.find_first_not_of(" \t\r\n") != std::__1::basic_string::npos) && (line[0] != '#');
+    return (line.find_first_not_of(" \t\r\n") != std::string::npos) && (line[0] != '#');
 }
 
 void TextParser::initInstructionsMap() {
-    instructionsMap["size "] = TextParser::parseSize;
-    instructionsMap["maxdepth"] = TextParser::parseMaxdepth;
-    instructionsMap["output"] = TextParser::parseOutput;
-    instructionsMap["camera"] = TextParser::parseCamera;
-    instructionsMap["sphere"] = TextParser::parseSphere;
-    instructionsMap["maxverts"] = TextParser::parseMaxverts;
-    instructionsMap["maxvertnorms"] = TextParser::parseMaxvertnorms;
-    instructionsMap["vertex"] = TextParser::parseVertex;
-    instructionsMap["vertexnormal"] = TextParser::parseVertexnormal;
-    instructionsMap["tri"] = TextParser::parseTri;
-    instructionsMap["trinormal"] = TextParser::parseTrinormal;
-    instructionsMap["translate"] = TextParser::parseTranslate;
-    instructionsMap["rotate"] = TextParser::parseRotate;
-    instructionsMap["scale"] = TextParser::parseScale;
-    instructionsMap["pushTransform"] = TextParser::parsePushTransform;
-    instructionsMap["popTransform"] = TextParser::parsePopTransform;
-    instructionsMap["directional"] = TextParser::parseDirectional;
-    instructionsMap["point"] = TextParser::parsePoint;
-    instructionsMap["attenuation"] = TextParser::parseAttenuation;
-    instructionsMap["ambient"] = TextParser::parseAmbient;
-    instructionsMap["diffuse"] = TextParser::parseDiffuse;
-    instructionsMap["specular"] = TextParser::parseSpecular;
-    instructionsMap["shininess"] = TextParser::parseShininess;
-    instructionsMap["emission"] = TextParser::parseEmission;
+    instructionsMap["size"] = &TextParser::parseSize;
+    instructionsMap["maxdepth"] = &TextParser::parseMaxdepth;
+    instructionsMap["output"] = &TextParser::parseOutput;
+    instructionsMap["camera"] = &TextParser::parseCamera;
+    instructionsMap["sphere"] = &TextParser::parseSphere;
+    instructionsMap["maxverts"] = &TextParser::parseMaxverts;
+    instructionsMap["maxvertnorms"] = &TextParser::parseMaxvertnorms;
+    instructionsMap["vertex"] = &TextParser::parseVertex;
+    instructionsMap["vertexnormal"] = &TextParser::parseVertexnormal;
+    instructionsMap["tri"] = &TextParser::parseTri;
+    instructionsMap["trinormal"] = &TextParser::parseTrinormal;
+    instructionsMap["translate"] = &TextParser::parseTranslate;
+    instructionsMap["rotate"] = &TextParser::parseRotate;
+    instructionsMap["scale"] = &TextParser::parseScale;
+    instructionsMap["pushTransform"] = &TextParser::parsePushTransform;
+    instructionsMap["popTransform"] = &TextParser::parsePopTransform;
+    instructionsMap["directional"] = &TextParser::parseDirectional;
+    instructionsMap["point"] = &TextParser::parsePoint;
+    instructionsMap["attenuation"] = &TextParser::parseAttenuation;
+    instructionsMap["ambient"] = &TextParser::parseAmbient;
+    instructionsMap["diffuse"] = &TextParser::parseDiffuse;
+    instructionsMap["specular"] = &TextParser::parseSpecular;
+    instructionsMap["shininess"] = &TextParser::parseShininess;
+    instructionsMap["emission"] = &TextParser::parseEmission;
 }
 
 void TextParser::parseSize(std::stringstream& s) {

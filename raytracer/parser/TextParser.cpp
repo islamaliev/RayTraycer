@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "SceneData.h"
+#include "Transform.h"
 
 void TextParser::matrixTransform(float* values) {
     mat4 transform = transforms.top();
@@ -61,98 +62,6 @@ void TextParser::parseLine(const std::string& line)
             ParseFunc func = it->second;
             (this->*func)(s);
         }
-
-        /*if (cmd == "directional" || cmd == "point")
-        {
-            validinput = readValuess(s, 6, values);
-            if (validinput)
-            {
-                lights.push_back(LightData(cmd == "directional", values));
-            }
-        }
-        } else if (cmd == "diffuse")
-        {
-            validinput = readValues(s, 3, values);
-            if (validinput)
-            {
-                for (i = 0; i < 3; i++)
-                {
-                    diffuse[i] = values[i];
-                }
-            }
-        } else if (cmd == "specular")
-        {
-            validinput = readValues(s, 3, values);
-            if (validinput)
-            {
-                for (i = 0; i < 3; i++)
-                {
-                    specular[i] = values[i];
-                }
-            }
-        } else if (cmd == "emission")
-        {
-            validinput = readValues(s, 3, values);
-            if (validinput)
-            {
-                for (i = 0; i < 3; i++)
-                {
-                    emission[i] = values[i];
-                }
-            }
-        } else if (cmd == "shininess")
-        {
-            validinput = readValues(s, 1, values);
-            if (validinput)
-            {
-                shininess = values[0];
-            }
-        }
-        else if (cmd == "translate")
-        {
-            validinput = readValues(s, 3, values);
-            if (validinput)
-            {
-                const mat4& translateM = Transform::translate(values[0], values[1], values[2]);
-                rightmultiply(translateM, transfstack);
-            }
-        }
-        else if (cmd == "scale")
-        {
-            validinput = readValues(s, 3, values);
-            if (validinput)
-            {
-                const mat4& scaleM = Transform::scale(values[0], values[1], values[2]);
-                rightmultiply(scaleM, transfstack);
-            }
-        }
-        else if (cmd == "rotate")
-        {
-            validinput = readValues(s, 4, values);
-            if (validinput)
-            {
-                const mat4& rotateM = mat4(Transform::rotate(values[3], vec3(values[0], values[1], values[2])));
-                rightmultiply(rotateM, transfstack);
-            }
-        }
-        else if (cmd == "pushTransform")
-        {
-            transfstack.push(transfstack.top());
-        } else if (cmd == "popTransform")
-        {
-            if (transfstack.size() <= 1)
-            {
-                std::cerr << "Stack has no elements.  Cannot Pop\n";
-            } else
-            {
-                transfstack.pop();
-            }
-        }
-
-        else
-        {
-            std::cerr << "Unknown Command: " << cmd << " Skipping \n";
-        }*/
     }
 }
 
@@ -218,7 +127,7 @@ void TextParser::parseCamera(std::stringstream& s) {
 void TextParser::parseSphere(std::stringstream& s) {
     readValues(s, 4);
     SphereData* sphere = new SphereData(values, values[3]);
-    std::copy(ambient, ambient + 3, sphere->ambient);
+    addObjectsData(sphere);
     sceneData->spheres.push_back(sphere);
 }
 
@@ -243,7 +152,7 @@ void TextParser::parseVertexnormal(std::stringstream& s) {
 void TextParser::parseTri(std::stringstream& s) {
     readValues(s, 3);
     TriangleData* tri = new TriangleData(values);
-    std::copy(ambient, ambient + 3, tri->ambient);
+    addObjectsData(tri);
     sceneData->triangles.push_back(tri);
 }
 
@@ -252,23 +161,33 @@ void TextParser::parseTrinormal(std::stringstream& s) {
 }
 
 void TextParser::parseTranslate(std::stringstream& s) {
-
+    readValues(s, 3);
+    const mat4& translateM = Transform::translate(values[0], values[1], values[2]);
+    rightMultiply(translateM);
 }
 
 void TextParser::parseRotate(std::stringstream& s) {
-
+    readValues(s, 4);
+    const mat4& rotateM = mat4(Transform::rotate(values[3], vec3(values[0], values[1], values[2])));
+    rightMultiply(rotateM);
 }
 
 void TextParser::parseScale(std::stringstream& s) {
-
+    readValues(s, 3);
+    const mat4& scaleM = Transform::scale(values[0], values[1], values[2]);
+    rightMultiply(scaleM);
 }
 
 void TextParser::parsePushTransform(std::stringstream& s) {
-
+    transforms.push(transforms.top());
 }
 
 void TextParser::parsePopTransform(std::stringstream& s) {
-
+    if (transforms.size() <= 1) {
+        std::cerr << "Stack has no elements.  Cannot Pop\n";
+    } else {
+        transforms.pop();
+    }
 }
 
 void TextParser::parseDirectional(std::stringstream& s) {
@@ -302,4 +221,9 @@ void TextParser::parseShininess(std::stringstream& s) {
 
 void TextParser::parseEmission(std::stringstream& s) {
 
+}
+
+void TextParser::addObjectsData(ObjectData* object) {
+    std::copy(ambient, ambient + 3, object->ambient);
+    object->transform = transforms.top();
 }

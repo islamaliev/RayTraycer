@@ -6,6 +6,7 @@
 #include <stack>
 #include <unordered_map>
 #include "glm/glm.hpp"
+#include "ObjectData.h"
 
 class SceneData;
 
@@ -63,6 +64,8 @@ private:
     void parseSpecular(std::stringstream& s);
     void parseShininess(std::stringstream& s);
     void parseEmission(std::stringstream& s);
+
+    void addObjectsData(ObjectData* object);
 
     float values[10];
     std::stack<mat4> transforms;

@@ -4,23 +4,20 @@
 #include <fstream>
 #include <sstream>
 #include "SceneData.h"
-#include "TriangleData.h"
 
-void TextParser::matrixTransform(float* values)
-{
+void TextParser::matrixTransform(float* values) {
     mat4 transform = transforms.top();
     vec4 valvec = vec4(values[0], values[1], values[2], values[3]);
     vec4 newval = transform * valvec;
     for (int i = 0; i < 4; i++) values[i] = newval[i];
 }
 
-void TextParser::rightMultiply(const mat4& matrix)
-{
+void TextParser::rightMultiply(const mat4& matrix) {
     mat4& T = transforms.top();
     T = T * matrix;
 }
 
-bool TextParser::readValues(std::stringstream& s, const int numvals, float* values) {
+bool TextParser::readValues(std::stringstream& s, const int numvals) {
     for (int i = 0; i < numvals; i++) {
         s >> values[i];
         if (s.fail()) {
@@ -73,16 +70,6 @@ void TextParser::parseLine(const std::string& line)
                 lights.push_back(LightData(cmd == "directional", values));
             }
         }
-        else if (cmd == "ambient")
-        {
-            validinput = readValues(s, 3, values); // colors
-            if (validinput)
-            {
-                for (i = 0; i < 3; i++)
-                {
-                    ambient[i] = values[i];
-                }
-            }
         } else if (cmd == "diffuse")
         {
             validinput = readValues(s, 3, values);
@@ -119,26 +106,6 @@ void TextParser::parseLine(const std::string& line)
             if (validinput)
             {
                 shininess = values[0];
-            }
-        }
-        else if (cmd == "sphere")
-        {
-            validinput = readValues(s, 1, values);
-            if (validinput)
-            {
-                Object* obj = &(objects[numobjects]);
-                obj->size = values[0];
-
-                for (i = 0; i < 4; i++)
-                {
-                    (obj->ambient)[i] = ambient[i];
-                    (obj->diffuse)[i] = diffuse[i];
-                    (obj->specular)[i] = specular[i];
-                    (obj->emission)[i] = emission[i];
-                }
-                obj->shininess = shininess;
-
-                obj->transform = transfstack.top();
             }
         }
         else if (cmd == "translate")
@@ -221,7 +188,7 @@ void TextParser::initInstructionsMap() {
 }
 
 void TextParser::parseSize(std::stringstream& s) {
-    readValues(s, 2, values);
+    readValues(s, 2);
     sceneData->width = (int) values[0];
     sceneData->height = (int) values[1];
 }
@@ -235,7 +202,7 @@ void TextParser::parseOutput(std::stringstream& s) {
 }
 
 void TextParser::parseCamera(std::stringstream& s) {
-    readValues(s, 10, values);
+    readValues(s, 10);
     sceneData->camera.lookFrom[0] = values[0];
     sceneData->camera.lookFrom[1] = values[1];
     sceneData->camera.lookFrom[2] = values[2];
@@ -249,11 +216,14 @@ void TextParser::parseCamera(std::stringstream& s) {
 }
 
 void TextParser::parseSphere(std::stringstream& s) {
-
+    readValues(s, 4);
+    SphereData* sphere = new SphereData(values);
+    std::copy(ambient, ambient + 3, sphere->ambient);
+    sceneData->spheres.push_back(sphere);
 }
 
 void TextParser::parseMaxverts(std::stringstream& s) {
-    readValues(s, 1, values);
+    readValues(s, 1);
     sceneData->maxVerticies = (int) values[0];
 }
 
@@ -262,7 +232,7 @@ void TextParser::parseMaxvertnorms(std::stringstream& s) {
 }
 
 void TextParser::parseVertex(std::stringstream& s) {
-    readValues(s, 3, values);
+    readValues(s, 3);
     sceneData->verticies.push_back(glm::vec3(values[0], values[1], values[2]));
 }
 
@@ -271,9 +241,9 @@ void TextParser::parseVertexnormal(std::stringstream& s) {
 }
 
 void TextParser::parseTri(std::stringstream& s) {
-    readValues(s, 3, values);
-    TriangleData* tri = new TriangleData((unsigned) values[0],(unsigned)  values[1],(unsigned)  values[2]);
-    std::copy(std::begin(ambient), std::end(ambient), std::begin(tri->ambient));
+    readValues(s, 3);
+    TriangleData* tri = new TriangleData(values);
+    std::copy(ambient, ambient + 3, tri->ambient);
     sceneData->triangles.push_back(tri);
 }
 
@@ -314,10 +284,8 @@ void TextParser::parseAttenuation(std::stringstream& s) {
 }
 
 void TextParser::parseAmbient(std::stringstream& s) {
-    readValues(s, 3, values);
-    ambient[0] = values[0];
-    ambient[1] = values[1];
-    ambient[2] = values[2];
+    readValues(s, 3);
+    std::copy(values, values + 3, ambient);
 }
 
 void TextParser::parseDiffuse(std::stringstream& s) {

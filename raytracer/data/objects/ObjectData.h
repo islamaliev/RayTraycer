@@ -6,7 +6,9 @@
 #include "MaterialData.h"
 
 struct ObjectData {
-    ObjectData(): transform(1.f) {};
+    ObjectData()
+            : transform(1.f)
+    {};
 
     glm::mat4 transform;
 

@@ -31,7 +31,7 @@ private:
 
     void rightMultiply(const mat4& matrix);
 
-    bool readValues(std::stringstream& s, const int numvals, float* values);
+    bool readValues(std::stringstream& s, const int numvals);
 
     void parseLine(const std::string& line);
 

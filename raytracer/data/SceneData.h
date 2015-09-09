@@ -6,8 +6,10 @@
 #include <vector>
 #include "glm/glm.hpp"
 #include "CameraData.h"
-#include "TriangleData.h"
-#include "SphereData.h"
+
+class TriangleData;
+class SphereData;
+class PointLightData;
 
 struct SceneData {
     unsigned width;
@@ -22,6 +24,7 @@ struct SceneData {
     std::vector<glm::vec3> verticies;
     std::vector<TriangleData*> triangles;
     std::vector<SphereData*> spheres;
+    std::vector<PointLightData*> pointLights;
 };
 
 

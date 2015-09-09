@@ -5,6 +5,9 @@
 #include <sstream>
 #include "SceneData.h"
 #include "Transform.h"
+#include "PointLightData.h"
+#include "TriangleData.h"
+#include "SphereData.h"
 
 void TextParser::matrixTransform(float* values) {
     mat4 transform = transforms.top();
@@ -107,7 +110,9 @@ void TextParser::parseMaxdepth(std::stringstream& s) {
 }
 
 void TextParser::parseOutput(std::stringstream& s) {
-    
+    std::string outputFile;
+    s >> outputFile;
+    sceneData->outputFile = outputFile;
 }
 
 void TextParser::parseCamera(std::stringstream& s) {
@@ -195,7 +200,9 @@ void TextParser::parseDirectional(std::stringstream& s) {
 }
 
 void TextParser::parsePoint(std::stringstream& s) {
-
+    readValues(s, 6);
+    PointLightData* pointLight = new PointLightData(values, values + 3);
+    sceneData->pointLights.push_back(pointLight);
 }
 
 void TextParser::parseAttenuation(std::stringstream& s) {
@@ -208,22 +215,27 @@ void TextParser::parseAmbient(std::stringstream& s) {
 }
 
 void TextParser::parseDiffuse(std::stringstream& s) {
-
+    readValues(s, 3);
+    std::copy(values, values + 3, material.diffuse);
 }
 
 void TextParser::parseSpecular(std::stringstream& s) {
-
+    readValues(s, 3);
+    std::copy(values, values + 3, material.specular);
 }
 
 void TextParser::parseShininess(std::stringstream& s) {
-
+    readValues(s, 1);
+    material.shininess = values[0];
 }
 
 void TextParser::parseEmission(std::stringstream& s) {
-
+    readValues(s, 3);
+    std::copy(values, values + 3, material.emission);
 }
 
 void TextParser::addObjectsData(ObjectData* object) {
     std::copy(ambient, ambient + 3, object->ambient);
+    object->material = material;
     object->transform = transforms.top();
 }

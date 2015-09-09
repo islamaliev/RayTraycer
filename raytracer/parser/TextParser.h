@@ -71,6 +71,7 @@ private:
     std::stack<mat4> transforms;
     float ambient[3];
     std::unordered_map<std::string, ParseFunc> instructionsMap;
+    MaterialData material;
 
     SceneData* sceneData;
 };

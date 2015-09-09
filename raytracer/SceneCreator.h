@@ -7,14 +7,14 @@
 class Scene;
 class SceneData;
 
-class SceneInitializer {
+class SceneCreator {
 public:
-    SceneInitializer()
+    SceneCreator()
             : scene(nullptr)
             , sceneData(nullptr)
     {}
 
-    ~SceneInitializer() {
+    ~SceneCreator() {
         scene = nullptr;
         sceneData = nullptr;
     }
@@ -31,6 +31,8 @@ private:
     void initializeSpheres();
 
     void initializeProperties();
+
+    void initializeLights();
 
     void processAndAdd(ObjectData* data, Object* object) const;
 

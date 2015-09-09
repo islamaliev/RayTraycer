@@ -13,8 +13,8 @@ int main(int argc, const char * argv[]) {
     TextParser parser;
     SceneData* const sceneData = parser.parse(argv[1]);
 
-    SceneInitializer initializer;
-    Scene* scene = initializer.create(sceneData);
+    SceneCreator sceneCreator;
+    Scene* scene = sceneCreator.create(sceneData);
 
     RayTracer rayTracer;
     Image* image = rayTracer.raytrace(scene);

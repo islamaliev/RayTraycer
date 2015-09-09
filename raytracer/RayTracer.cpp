@@ -33,7 +33,7 @@ Image* RayTracer::raytrace(Scene* scene) {
     return image;
 }
 
-Ray* RayTracer::getRayThoughPixel(Camera* camera, float x, float y) {
+Ray* RayTracer::getRayThoughPixel(const Camera* camera, float x, float y) const {
     const float U = (x - halfW) / halfW;
     const float V = (halfH - y) / halfH;
     float alpha = tanFOVX * U;
@@ -47,7 +47,7 @@ Ray* RayTracer::getRayThoughPixel(Camera* camera, float x, float y) {
     return ray;
 }
 
-Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) {
+Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) const {
     float minDist = 0;
     float currentDist;
     Object* hitObject = nullptr;
@@ -65,26 +65,27 @@ Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) {
     return new Intersection(minDist, ray, hitObject);
 }
 
-unsigned RayTracer::findColor(Intersection* intersection) {
+unsigned RayTracer::findColor(Intersection* intersection) const {
     if (intersection->dist <= 0) {
         return 0;
     }
+
     unsigned color = convertToColor(intersection->object->ambient);
     return color;
 }
 
-float RayTracer::intersect(Ray* ray, Object* object) {
+float RayTracer::intersect(const Ray* ray, const Object* object) const {
     return object->intersect(ray);
 }
 
-void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) {
+void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const {
     const unsigned int i = y * 3 * w + x * 3;
     image->data[i + 0] = (unsigned char) (color & 0xFF);
     image->data[i + 1] = (unsigned char) (color >> 8 & 0xFF);
     image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);
 }
 
-unsigned int RayTracer::convertToColor(float chanels[3]) {
+unsigned int RayTracer::convertToColor(float chanels[3]) const {
     unsigned char mask = 0xFF;
     unsigned char r = (unsigned char) (chanels[0] * mask);
     unsigned char g = (unsigned char) (chanels[1] * mask);

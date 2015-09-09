@@ -12,7 +12,7 @@ public:
         , inverseTransform(1.f)
     {}
 
-    virtual float intersect(Ray* ray) { return 0; }
+    virtual float intersect(const Ray* ray) const { return 0; }
 
     const glm::mat4& getTransform() const { return transform; }
     void setTransform(glm::mat4 matrix);

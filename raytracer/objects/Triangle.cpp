@@ -8,7 +8,7 @@ Triangle::Triangle(const vec3* v1, const vec3* v2, const vec3* v3) {
     verticies.push_back(v3);
 }
 
-float Triangle::intersect(Ray* ray) {
+float Triangle::intersect(const Ray* ray) const {
     mat4 invM = getInverseTransform();
 
     vec4 rayPos = invM * ray->pos;
@@ -37,7 +37,7 @@ float Triangle::intersect(Ray* ray) {
     return 0;
 }
 
-bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, const vec3& c) {
+bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, const vec3& c) const {
     vec3 v0 = c - a;
     vec3 v1 = b - a;
     vec3 v2 = p - a;

@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include "Ray.h"
 
-float Sphere::intersect(Ray* ray) {
+float Sphere::intersect(const Ray* ray) const {
     // a * t ^ 2 + b * t + c = 0
     // t ^ 2 * (P1 * P1) + 2 * t * P1 * (P0 - C) + (P0 - C) * (P0 - C) - r ^ 2 = 0
     // a = P1 * P1

@@ -13,7 +13,7 @@ public:
     {}
 
 
-    float intersect(Ray* ray) override;
+    float intersect(const Ray* ray) const override;
 
     glm::vec4 position;
     float radius;

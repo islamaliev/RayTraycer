@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Triangle.h"
 #include "ProgressReporter.h"
+#include "IntersectionDetector.h"
 
 Image* RayTracer::raytrace(Scene* scene) {
     w = scene->width;
@@ -20,10 +21,11 @@ Image* RayTracer::raytrace(Scene* scene) {
     Image* image = new Image(w, h);
     ColorCalculator colorCalculator(scene);
     ProgressReporter progressReporter(scene->width, scene->height);
+    IntersectionDetector intersectionDetector(scene);
     for (unsigned y = 0; y < h; y++) {
         for (unsigned x = 0; x < w; x++) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
-            Intersection* intersection = getIntersection(ray, scene);
+            Intersection* intersection = intersectionDetector.getIntersection(ray);
             unsigned color = colorCalculator.calculate(intersection);
             pushColor(image, color, x, y);
             progressReporter.handleProgress(x, y);
@@ -44,25 +46,6 @@ Ray* RayTracer::getRayThoughPixel(const Camera* camera, float x, float y) const 
     vec3 rayDirNorm = glm::normalize(rayDir);
     ray->dir = vec4(rayDirNorm, 0);
     return ray;
-}
-
-Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) const {
-    float minDist = 0;
-    float currentDist;
-    Object* hitObject = nullptr;
-    std::vector<Object*>& objects = scene->objects;
-    for (auto it = objects.begin(); it != objects.end(); it++) {
-        currentDist = intersect(ray, *it);
-        if (currentDist > 0 && (currentDist < minDist || minDist == 0)) {
-            minDist = currentDist;
-            hitObject = *it;
-        }
-    }
-    return new Intersection(minDist, ray, hitObject);
-}
-
-float RayTracer::intersect(const Ray* ray, const Object* object) const {
-    return object->intersect(ray);
 }
 
 void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const {

@@ -21,10 +21,10 @@ public:
 
     const glm::mat4& getInverseTransform() const { return inverseTransform; }
 
-    float ambient[3];
-    float diffuse[3];
-    float specular[3];
-    float emission[3];
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+    glm::vec3 emission;
     float shininess;
 
 protected:

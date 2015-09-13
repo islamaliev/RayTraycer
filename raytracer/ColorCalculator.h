@@ -2,10 +2,6 @@
 #define HW3_COLORCALCULATOR_H
 
 
-//namespace glm {
-//    class vec3;
-//}
-
 #include "glm/glm.hpp"
 
 class Intersection;
@@ -20,8 +16,12 @@ public:
     unsigned calculate(const Intersection* intersection) const;
 
 private:
-    unsigned convertToInt(float chanels[3]) const;
-    glm::vec4 convertToVec(float chanels[3]) const;
+    typedef glm::vec3 vec3;
+
+    unsigned convertToInt(const glm::vec3& color) const;
+
+    vec3 computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& halfvec,
+            const vec3& diffuse, const vec3& specular, float shininess);
 
     Scene* const scene;
 };

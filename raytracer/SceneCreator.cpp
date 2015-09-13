@@ -66,11 +66,11 @@ void SceneCreator::initializeSpheres() {
 }
 
 void SceneCreator::processAndAdd(ObjectData* data, Object* object) const {
-    std::copy(data->ambient, data->ambient + 3, object->ambient);
     object->setTransform(data->transform);
-    std::copy(data->material.emission, data->material.emission + 3, object->emission);
-    std::copy(data->material.diffuse, data->material.diffuse + 3, object->diffuse);
-    std::copy(data->material.specular, data->material.specular + 3, object->specular);
+    object->ambient = glm::vec3(data->ambient[0], data->ambient[1], data->ambient[2]);
+    object->emission = glm::vec3(data->material.emission[0], data->material.emission[1], data->material.emission[2]);
+    object->diffuse = glm::vec3(data->material.diffuse[0], data->material.diffuse[1], data->material.diffuse[2]);
+    object->specular = glm::vec3(data->material.specular[0], data->material.specular[1], data->material.specular[2]);
     object->shininess = data->material.shininess;
     scene->objects.push_back(object);
 }

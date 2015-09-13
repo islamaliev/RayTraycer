@@ -44,10 +44,20 @@ public:
     Sphere sphere;
 
 protected:
-    std::vector<std::string> transforms;
+    std::string getTranslations() {
+        std::string s("");
+        if (transforms.size() > 0) {
+            for (auto tr : transforms) {
+                s += tr + " * ";
+            }
+            s = " | transorms: " + s.substr(0, s.size() - 2);
+        }
+        return s;
+    }
 
 private:
     glm::mat4 matrix;
+    std::vector<std::string> transforms;
 };
 
 class SphereNormalTest : public SphereTest {
@@ -64,25 +74,13 @@ public:
 
 private:
     ::testing::AssertionResult NormalMatch(float px, float py, float pz, float x1, float y1, float z1, float x2, float y2, float z2) {
-        const float d = fabsf(y1 - y2);
-        if (fabsf(x1 - x2) > DELTA || d > DELTA || fabsf(z1 - z2) > DELTA) {
+        if (fabsf(x1 - x2) > DELTA || fabsf(y1 - y2) > DELTA || fabsf(z1 - z2) > DELTA) {
             return ::testing::AssertionFailure() << "point(" << px << ", " << py << ", " << pz
                     << ") -> expected(" << x2 << ", " << y2 << ", " << z2
                     << ") != actual(" << x1 << ", " << y1 << ", " << z1 << ")" << getTranslations();
         }
 
         return ::testing::AssertionSuccess();
-    }
-
-    std::string getTranslations() {
-        std::string s("");
-        if (transforms.size() > 0) {
-            for (auto tr : transforms) {
-                s += tr + " * ";
-            }
-            s = " | transorms: " + s.substr(0, s.size() - 2);
-        }
-        return s;
     }
 };
 

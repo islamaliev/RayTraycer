@@ -14,6 +14,8 @@ public:
 
     virtual float intersect(const Ray* ray) const { return 0; }
 
+    virtual glm::vec3 getNormal(glm::vec4 point) = 0;
+
     const glm::mat4& getTransform() const { return transform; }
     void setTransform(glm::mat4 matrix);
 

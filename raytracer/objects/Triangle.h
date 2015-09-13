@@ -13,6 +13,8 @@ public:
 
     float intersect(const Ray* ray) const override;
 
+    glm::vec3 getNormal(glm::vec4 point) override;
+
     std::vector<const vec3*> verticies;
 
 private:

@@ -33,3 +33,11 @@ float Sphere::intersect(const Ray* ray) const {
     p = ray->pos - getTransform() * p;
     return glm::length(p);
 }
+
+glm::vec3 Sphere::getNormal(glm::vec4 point) {
+    const mat4& inv = getInverseTransform();
+    vec4 objPoint = inv * point;
+    vec3 normDir = glm::normalize(vec3(objPoint - position));
+    vec3 normDir3 = vec3(glm::transpose(inv) * vec4(normDir, 0));
+    return glm::normalize(normDir3);
+}

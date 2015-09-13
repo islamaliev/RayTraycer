@@ -54,3 +54,8 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
 
     return (u >= 0) && (v >= 0) && (u + v < 1);
 }
+
+glm::vec3 Triangle::getNormal(glm::vec4 point)
+{
+    return vec3();
+}

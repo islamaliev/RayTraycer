@@ -7,7 +7,7 @@
 #include "Camera.h"
 
 vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& halfvec,
-        const vec3& diffuse, const vec3& specular, float shininess) {
+        const vec3& diffuse, const vec3& specular, float shininess) const {
     float nDotL = glm::dot(normal, direction);
     if (nDotL < 0) {
         nDotL = 0;
@@ -66,8 +66,4 @@ unsigned ColorCalculator::convertToInt(const glm::vec3& color) const {
     result |= r << 16;
     result |= g << 8;
     return result;
-}
-
-glm::vec3 ColorCalculator::convertToVec(float chanels[3]) const {
-    return glm::vec3(chanels[0], chanels[1], chanels[2]);
 }

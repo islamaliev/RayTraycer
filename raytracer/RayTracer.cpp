@@ -7,9 +7,7 @@
 #include "Object.h"
 #include "Camera.h"
 #include "Triangle.h"
-
-int totalIntersections = 0;
-int totalIntersectionChecks = 0;
+#include "ProgressReporter.h"
 
 Image* RayTracer::raytrace(Scene* scene) {
     w = scene->width;
@@ -21,16 +19,16 @@ Image* RayTracer::raytrace(Scene* scene) {
     tanFOVX = tanFOVY * w / h;
     Image* image = new Image(w, h);
     ColorCalculator colorCalculator(scene);
-    for (unsigned x = 0; x < w; x++) {
-        for (unsigned y = 0; y < h; y++) {
+    ProgressReporter progressReporter(scene->width, scene->height);
+    for (unsigned y = 0; y < h; y++) {
+        for (unsigned x = 0; x < w; x++) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
             Intersection* intersection = getIntersection(ray, scene);
             unsigned color = colorCalculator.calculate(intersection);
             pushColor(image, color, x, y);
+            progressReporter.handleProgress(x, y);
         }
     }
-    std::cout << "total intersections: " << totalIntersections << std::endl;
-    std::cout << "total intersection checks: " << totalIntersectionChecks << std::endl;
     return image;
 }
 
@@ -59,10 +57,7 @@ Intersection* RayTracer::getIntersection(Ray* ray, Scene* scene) const {
             minDist = currentDist;
             hitObject = *it;
         }
-        if (currentDist > 0)
-            totalIntersections++;
     }
-    totalIntersectionChecks++;
     return new Intersection(minDist, ray, hitObject);
 }
 

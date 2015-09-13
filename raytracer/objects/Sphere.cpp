@@ -28,7 +28,19 @@ float Sphere::intersect(const Ray* ray) const {
     float t1 = -(b + sqD) / (2 * a);
     float t2 = (sqD - b) / (2 * a);
 
-    float t = t1 < t2 ? t1 : t2;
+    if (t1 < 0 && t2 < 0) {
+        return 0;
+    }
+
+    float t;
+    if (t1 < 0) {
+        t = t2;
+    } else if (t2 < 0) {
+        t = t1;
+    } else {
+        t = t1 < t2 ? t1 : t2;
+    }
+
     vec4 p = rayPos + (rayDir * t);
     p = ray->pos - getTransform() * p;
     return glm::length(p);

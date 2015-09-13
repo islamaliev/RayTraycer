@@ -1,12 +1,9 @@
-#include <vector>
-#include <iostream>
 #include "RayTracer.h"
 #include "Image.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "Object.h"
 #include "Camera.h"
-#include "Triangle.h"
 #include "ProgressReporter.h"
 #include "IntersectionDetector.h"
 
@@ -19,9 +16,9 @@ Image* RayTracer::raytrace(Scene* scene) {
     tanFOVY = tanf(scene->camera->fovy * toRadian);
     tanFOVX = tanFOVY * w / h;
     Image* image = new Image(w, h);
-    ColorCalculator colorCalculator(scene);
     ProgressReporter progressReporter(scene->width, scene->height);
     IntersectionDetector intersectionDetector(scene);
+    ColorCalculator colorCalculator(scene, &intersectionDetector);
     for (unsigned y = 0; y < h; y++) {
         for (unsigned x = 0; x < w; x++) {
             Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);

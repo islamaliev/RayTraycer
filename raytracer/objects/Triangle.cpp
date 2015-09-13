@@ -26,6 +26,9 @@ float Triangle::intersect(const Ray* ray) const {
     vec4 a(*verticies[0], 0);
 
     float t = (glm::dot(a, n) - glm::dot(rayPos, n)) / d;
+    if (t < 0) {
+        return 0;
+    }
 
     vec4 p = rayPos + (rayDir * t);
     if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))

@@ -6,11 +6,14 @@
 
 class Intersection;
 class Scene;
+class IntersectionDetector;
+class Light;
 
 class ColorCalculator {
 public:
-    ColorCalculator(Scene* const scene)
-        : scene(scene) {
+    ColorCalculator(Scene* const scene, IntersectionDetector* intersectionDetector)
+        : scene(scene)
+        , intersectionDetector(intersectionDetector) {
     }
 
     unsigned calculate(const Intersection* intersection) const;
@@ -20,10 +23,13 @@ private:
 
     unsigned convertToInt(const glm::vec3& color) const;
 
-    vec3 computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& halfvec,
+    vec3 computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
             const vec3& diffuse, const vec3& specular, float shininess) const;
 
+    bool isLit(const glm::vec4& point, Light* light) const;
+
     Scene* const scene;
+    IntersectionDetector* const intersectionDetector;
 };
 
 

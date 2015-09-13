@@ -14,8 +14,8 @@ float Triangle::intersect(const Ray* ray) const {
     vec4 rayPos = invM * ray->pos;
     vec4 rayDir = invM * ray->dir;
 
-    const vec3& side1(*verticies[2] - *verticies[0]);
-    const vec3& side2(*verticies[1] - *verticies[0]);
+    const vec3& side1(*verticies[1] - *verticies[0]);
+    const vec3& side2(*verticies[2] - *verticies[0]);
     vec4 n = glm::normalize(vec4(glm::cross(side1, side2), 0));
 
     float d = glm::dot(rayDir, n);
@@ -28,7 +28,7 @@ float Triangle::intersect(const Ray* ray) const {
     float t = (glm::dot(a, n) - glm::dot(rayPos, n)) / d;
 
     vec4 p = rayPos + (rayDir * t);
-    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[1], *verticies[2]))
+    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))
     {
         p = ray->pos - getTransform() * p;
         return glm::length(p);
@@ -57,5 +57,7 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
 
 glm::vec3 Triangle::getNormal(glm::vec4 point)
 {
-    return vec3();
+    const vec3& side1(*verticies[1] - *verticies[0]);
+    const vec3& side2(*verticies[2] - *verticies[0]);
+    return glm::normalize(glm::cross(side1, side2));
 }

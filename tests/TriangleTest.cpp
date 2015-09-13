@@ -50,6 +50,29 @@ private:
     }
 };
 
+class TriangleNormalTest : public TriangleTest {
+public:
+    glm::vec3 getNormal() {
+        glm::vec4 point(1, 1, 1, 1);
+        return triangle.getNormal(point);
+    }
+
+    void assertNormals(float x, float y, float z) {
+        glm::vec3 n = getNormal();
+        EXPECT_TRUE(NormalMatch(x, y, z, n.x, n.y, n.z));
+    }
+
+private:
+    ::testing::AssertionResult NormalMatch(float x1, float y1, float z1, float x2, float y2, float z2) {
+        if (fabsf(x1 - x2) > DELTA || fabsf(y1 - y2) > DELTA || fabsf(z1 - z2) > DELTA) {
+            return ::testing::AssertionFailure() << "expected(" << x1 << ", " << y1 << ", " << z1
+                    << ") != actual(" << x2 << ", " << y2 << ", " << z2 << ")";
+        }
+
+        return ::testing::AssertionSuccess();
+    }
+};
+
 TEST_F(TriangleIntersectionTest, PerpendicularRay) {
     assertIntersection(0.5f, -0.5f, 1, 0, 0, -1, 1);
     assertIntersection(0.1f, 0, 1, 0, 0, -1, 1);
@@ -66,4 +89,8 @@ TEST_F(TriangleIntersectionTest, ParallelRay) {
 TEST_F(TriangleIntersectionTest, ArbitraryRay) {
     assertIntersection(0.2f, -1.2f, 1.f, 0, 0.7071f, -0.7071f, 1.4142f);
     assertIntersection(0, 0, 1.f, 0, -0.708f, -0.708f, 0);
+}
+
+TEST_F(TriangleNormalTest, Default) {
+    assertNormals(0, 0, 1);
 }

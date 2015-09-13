@@ -7,11 +7,8 @@
 class PointLight : public Light {
 public:
     PointLight(const glm::vec3& pos, const glm::vec3& col)
-        : Light(col)
-        , position(pos, 1) {
+        : Light(vec4(pos, 1), col) {
     }
-
-    glm::vec4 position;
 };
 
 

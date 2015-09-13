@@ -6,10 +6,12 @@
 
 class Light {
 public:
-    Light(const glm::vec3& col)
-        : color(col) {
+    Light(const glm::vec4& pos, const glm::vec3& col)
+        : position(pos)
+        , color(col) {
     }
 
+    glm::vec4 position;
     glm::vec3 color;
 };
 

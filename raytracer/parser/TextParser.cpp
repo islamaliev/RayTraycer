@@ -4,10 +4,10 @@
 #include <fstream>
 #include <sstream>
 #include "SceneData.h"
-#include "Transform.h"
 #include "PointLightData.h"
 #include "TriangleData.h"
 #include "SphereData.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 void TextParser::matrixTransform(float* values) {
     mat4 transform = transforms.top();
@@ -167,19 +167,22 @@ void TextParser::parseTrinormal(std::stringstream& s) {
 
 void TextParser::parseTranslate(std::stringstream& s) {
     readValues(s, 3);
-    const mat4& translateM = Transform::translate(values[0], values[1], values[2]);
+    mat4 translateM(1.0f);
+    translateM = glm::translate(translateM, glm::vec3(values[0], values[1], values[2]));
     rightMultiply(translateM);
 }
 
 void TextParser::parseRotate(std::stringstream& s) {
     readValues(s, 4);
-    const mat4& rotateM = mat4(Transform::rotate(values[3], vec3(values[0], values[1], values[2])));
+    mat4 rotateM(1.0f);
+    rotateM = glm::rotate(rotateM, values[3], glm::vec3(values[0], values[1], values[2]));
     rightMultiply(rotateM);
 }
 
 void TextParser::parseScale(std::stringstream& s) {
     readValues(s, 3);
-    const mat4& scaleM = Transform::scale(values[0], values[1], values[2]);
+    mat4 scaleM(1.0f);
+    scaleM = glm::scale(scaleM, glm::vec3(values[0], values[1], values[2]));
     rightMultiply(scaleM);
 }
 

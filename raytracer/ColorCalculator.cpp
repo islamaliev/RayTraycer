@@ -25,14 +25,11 @@ vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor
     return retval;
 }
 
-unsigned ColorCalculator::calculate(const Intersection* intersection) const
+unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const
 {
     if (intersection->dist <= 0) {
         return 0;
     }
-
-    typedef glm::vec3 vec3;
-    typedef glm::vec4 vec4;
 
     vec3 finalcolor;
     Object* obj = intersection->object;
@@ -48,16 +45,19 @@ unsigned ColorCalculator::calculate(const Intersection* intersection) const
             l = glm::normalize(vec3(light->position - intersectionPoint));
         }
 
-        if (!isLit(intersectionPoint, light)) {
-            continue;
-        }
+        finalcolor += obj->ambient + obj->emission;
 
-        vec3 eye = glm::normalize(scene->camera->pos);
-        vec3 half = glm::normalize(l + eye);
         vec3 normal = obj->getNormal(intersectionPoint);
 
-        finalcolor += computeLight(l, light->color, normal, half, obj->diffuse, obj->specular, obj->shininess);
-        finalcolor += obj->ambient + obj->emission;
+        if (isLit(intersectionPoint, light)) {
+            vec3 eye = glm::normalize(scene->camera->pos);
+            vec3 half = glm::normalize(l + eye);
+            finalcolor += computeLight(l, light->color, normal, half, obj->diffuse, obj->specular, obj->shininess);
+        }
+
+        if (++depth <= 1) {
+            finalcolor += reflectionTracer.findColor(intersection, normal, depth) * obj->specular;
+        }
     }
     return convertToInt(finalcolor);
 }

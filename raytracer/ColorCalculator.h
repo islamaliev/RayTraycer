@@ -3,6 +3,7 @@
 
 
 #include "glm/glm.hpp"
+#include "ReflectionTracer.h"
 
 class Intersection;
 class Scene;
@@ -13,13 +14,15 @@ class ColorCalculator {
 public:
     ColorCalculator(Scene* const scene, IntersectionDetector* intersectionDetector)
         : scene(scene)
-        , intersectionDetector(intersectionDetector) {
+        , intersectionDetector(intersectionDetector)
+        , reflectionTracer(scene, intersectionDetector, this) {
     }
 
-    unsigned calculate(const Intersection* intersection) const;
+    unsigned calculate(const Intersection* intersection, unsigned depth = 0) const;
 
 private:
     typedef glm::vec3 vec3;
+    typedef glm::vec4 vec4;
 
     unsigned convertToInt(const glm::vec3& color) const;
 
@@ -30,6 +33,7 @@ private:
 
     Scene* const scene;
     IntersectionDetector* const intersectionDetector;
+    ReflectionTracer reflectionTracer;
 };
 
 

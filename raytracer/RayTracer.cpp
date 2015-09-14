@@ -8,13 +8,7 @@
 #include "IntersectionDetector.h"
 
 Image* RayTracer::raytrace(Scene* scene) {
-    w = scene->width;
-    h = scene->height;
-    halfW = w * 0.5f;
-    halfH = h * 0.5f;
-    float toRadian = (float) (M_PI / 360.f);
-    tanFOVY = tanf(scene->camera->fovy * toRadian);
-    tanFOVX = tanFOVY * w / h;
+    init(scene);
     Image* image = new Image(w, h);
     ProgressReporter progressReporter(scene->width, scene->height);
     IntersectionDetector intersectionDetector(scene);
@@ -50,4 +44,14 @@ void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsi
     image->data[i + 0] = (unsigned char) (color & 0xFF);
     image->data[i + 1] = (unsigned char) (color >> 8 & 0xFF);
     image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);
+}
+
+void RayTracer::init(Scene* scene) {
+    w = scene->width;
+    h = scene->height;
+    halfW = w * 0.5f;
+    halfH = h * 0.5f;
+    float toRadian = (float) (M_PI / 360.f);
+    tanFOVY = tanf(scene->camera->fovy * toRadian);
+    tanFOVX = tanFOVY * w / h;
 }

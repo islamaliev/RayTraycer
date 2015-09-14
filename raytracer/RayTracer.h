@@ -17,11 +17,9 @@ public:
     Image* raytrace(Scene* scene);
 
 private:
+    void init(Scene* scene);
+
     Ray* getRayThoughPixel(const Camera* camera, float x, float y) const;
-
-    Intersection* getIntersection(Ray* ray, Scene* scene) const;
-
-    float intersect(const Ray* ray, const Object* object) const;
 
     void pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const;
 

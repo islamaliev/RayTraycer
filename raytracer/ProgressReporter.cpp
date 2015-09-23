@@ -1,27 +1,23 @@
 #include "ProgressReporter.h"
 #include <iostream>
 #include <math.h>
+#include <sstream>
 
-void ProgressReporter::handleProgress(unsigned x, unsigned y)
-{
+void ProgressReporter::handleProgress(unsigned x, unsigned y) {
     unsigned index = y * width + x;
-    const unsigned int i = index % REPORTS_TO_MERGE;
-    if (i == REPORTS_TO_MERGE_MODULO) {
-        std::cout << ".";
+    unsigned percents = index * 100 / total;
+    while (printed < percents) {
+        printed++;
+        char symbol('.');
+        if (printed % 10 == 0) {
+            std::stringstream s;
+            s << printed / 10;
+            symbol = s.str()[0];
+        }
+        std::cout << symbol << std::flush;
     }
-    if (index % newRowIndex == newRowIndexModulo) {
-        std::cout << std::endl;
-    }
-    if (index == width * height - 1) {
+
+    if (index == total - 1) {
         std::cout << std::endl << "done!";
     }
-}
-
-void ProgressReporter::init() {
-    unsigned total = width * height;
-    unsigned outputsNum = total / REPORTS_TO_MERGE;
-    float ratio = height / (float) width;
-    float w = sqrtf(outputsNum / ratio);
-    newRowIndex = (unsigned) (w * 2 * REPORTS_TO_MERGE);
-    newRowIndexModulo = newRowIndex - 1;
 }

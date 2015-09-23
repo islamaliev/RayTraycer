@@ -5,23 +5,17 @@
 class ProgressReporter {
 public:
     ProgressReporter(unsigned width, unsigned height)
-        : width(width)
-        , height(height) {
-        init();
+        : total(width * height)
+        , width(width)
+        , printed(0) {
     }
 
     void handleProgress(unsigned x, unsigned y);
 
 private:
-    static const unsigned REPORTS_TO_MERGE = 50;
-    static const unsigned REPORTS_TO_MERGE_MODULO = REPORTS_TO_MERGE - 1;
-
-    void init();
-
+    unsigned total;
     unsigned width;
-    unsigned height;
-    unsigned newRowIndex;
-    unsigned newRowIndexModulo;
+    unsigned printed;
 };
 
 

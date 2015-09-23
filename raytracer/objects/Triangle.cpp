@@ -62,5 +62,7 @@ glm::vec3 Triangle::getNormal(glm::vec4 point)
 {
     const vec3& side1(*verticies[1] - *verticies[0]);
     const vec3& side2(*verticies[2] - *verticies[0]);
-    return glm::normalize(glm::cross(side1, side2));
+    const vec3& normal = glm::normalize(glm::cross(side1, side2));
+    const vec3& transformedNormal = vec3(glm::transpose(getInverseTransform()) * vec4(normal, 0));
+    return glm::normalize(transformedNormal);
 }

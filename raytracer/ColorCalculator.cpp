@@ -26,19 +26,17 @@ vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor
 }
 
 unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const {
-    if (intersection->dist <= 0 || depth++ > scene->maxDepth) {
+    if (intersection->dist <= 0) {
         return 0;
     }
 
-    vec3 finalcolor;
     Object* obj = intersection->object;
+    vec3 finalcolor = obj->ambient + obj->emission;
 
     for (auto it = scene->lights.begin(); it != scene->lights.end(); it++) {
         Light* light = *it;
 
         vec4 intersectionPoint = intersection->ray->pos + (intersection->ray->dir * intersection->dist);
-
-        finalcolor += obj->ambient + obj->emission;
 
         vec3 normal = obj->getNormal(intersectionPoint);
 
@@ -60,9 +58,11 @@ unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned d
         }
 
         unsigned reflectedColor = reflectionTracer.findColor(intersection, normal, depth);
-        vec3 findColor = convertToVec(reflectedColor);
-        vec3 sp = findColor * obj->specular;
-        finalcolor += sp;
+        if (reflectedColor != 0) {
+            vec3 findColor = convertToVec(reflectedColor);
+            vec3 sp = findColor * obj->specular;
+            finalcolor += sp;
+        }
     }
     if (finalcolor.r > 1) finalcolor.r = 1;
     if (finalcolor.g > 1) finalcolor.g = 1;

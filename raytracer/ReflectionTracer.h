@@ -16,7 +16,7 @@ public:
         , colorCalculator(colorCalculator) {
     }
 
-    glm::vec3 findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth = 0) const;
+    unsigned findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth = 0) const;
 
 private:
     typedef glm::vec3 vec3;

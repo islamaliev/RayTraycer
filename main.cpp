@@ -20,7 +20,8 @@ int main(int argc, const char * argv[]) {
     Image* image = rayTracer.raytrace(scene);
     FIBITMAP *img = FreeImage_ConvertFromRawBits(image->data, scene->width, scene->height, scene->width * 3,
             24, 0xFF0000, 0x00FF00, 0x0000FF, true);
-    FreeImage_Save(FIF_PNG, img, "/Users/islamaliev/dev/testing/cpp/opengl/hw3/hw3/output.png", 0);
+    std::string filename = "/Users/islamaliev/dev/testing/cpp/opengl/hw3/hw3/" + scene->outputFile;
+    FreeImage_Save(FIF_PNG, img, filename.c_str(), 0);
 
     FreeImage_DeInitialise();
     return 0;

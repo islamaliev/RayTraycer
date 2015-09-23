@@ -7,7 +7,9 @@
 #include "TriangleData.h"
 #include "SphereData.h"
 #include "PointLight.h"
+#include "DirectionalLight.h"
 #include "PointLightData.h"
+#include "DirectionalLightData.h"
 
 Scene* SceneCreator::create(SceneData* sceneData) {
     this->sceneData = sceneData;
@@ -40,11 +42,21 @@ void SceneCreator::initializeLights() {
         PointLight* light = new PointLight(position, color);
         scene->lights.push_back(light);
     }
+    for (auto it = sceneData->directionalLights.begin(); it != sceneData->directionalLights.end(); it++) {
+        DirectionalLightData* data = *it;
+        glm::vec3 color(data->color[0], data->color[1], data->color[2]);
+        glm::vec3 position(data->direction[0], data->direction[1], data->direction[2]);
+        DirectionalLight* light = new DirectionalLight(position, color);
+        scene->lights.push_back(light);
+    }
+    std::copy(sceneData->attenuation, sceneData->attenuation + 3, scene->attenuation);
 }
 
 void SceneCreator::initializeProperties() {
-    scene->width = sceneData->width / 2;
-    scene->height = sceneData->height / 2;
+    scene->width = sceneData->width;
+    scene->height = sceneData->height;
+    scene->maxDepth = sceneData->maxDepth;
+    scene->outputFile = sceneData->outputFile;
 }
 
 void SceneCreator::initializeTriangles() {

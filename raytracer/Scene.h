@@ -2,6 +2,7 @@
 
 
 #include <vector>
+#include <string>
 
 class Object;
 class Camera;
@@ -11,7 +12,10 @@ class Scene {
 public:
     unsigned width;
     unsigned height;
+    unsigned maxDepth;
+    std::string outputFile;
     std::vector<Object*> objects;
     std::vector<Light*> lights;
+    float attenuation[3];
     Camera* camera;
 };

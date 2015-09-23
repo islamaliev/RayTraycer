@@ -10,11 +10,17 @@
 class TriangleData;
 class SphereData;
 class PointLightData;
+class DirectionalLightData;
 
 struct SceneData {
+    SceneData()
+        : maxDepth(5) {
+        attenuation[0] = 1;
+    }
+
     unsigned width;
     unsigned height;
-    int maxDepth;
+    unsigned maxDepth;
     std::string outputFile;
 
     CameraData camera;
@@ -25,6 +31,8 @@ struct SceneData {
     std::vector<TriangleData*> triangles;
     std::vector<SphereData*> spheres;
     std::vector<PointLightData*> pointLights;
+    std::vector<DirectionalLightData*> directionalLights;
+    float attenuation[3];
 };
 
 

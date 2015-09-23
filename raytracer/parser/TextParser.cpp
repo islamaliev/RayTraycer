@@ -5,6 +5,7 @@
 #include <sstream>
 #include "SceneData.h"
 #include "PointLightData.h"
+#include "DirectionalLightData.h"
 #include "TriangleData.h"
 #include "SphereData.h"
 #include "glm/gtc/matrix_transform.hpp"
@@ -106,7 +107,8 @@ void TextParser::parseSize(std::stringstream& s) {
 }
 
 void TextParser::parseMaxdepth(std::stringstream& s) {
-    
+    readValues(s, 1);
+    sceneData->maxDepth = (unsigned) values[0];
 }
 
 void TextParser::parseOutput(std::stringstream& s) {
@@ -199,17 +201,20 @@ void TextParser::parsePopTransform(std::stringstream& s) {
 }
 
 void TextParser::parseDirectional(std::stringstream& s) {
-
+    readValues(s, 6);
+    DirectionalLightData* light = new DirectionalLightData(values, values + 3);
+    sceneData->directionalLights.push_back(light);
 }
 
 void TextParser::parsePoint(std::stringstream& s) {
     readValues(s, 6);
-    PointLightData* pointLight = new PointLightData(values, values + 3);
-    sceneData->pointLights.push_back(pointLight);
+    PointLightData* light = new PointLightData(values, values + 3);
+    sceneData->pointLights.push_back(light);
 }
 
 void TextParser::parseAttenuation(std::stringstream& s) {
-
+    readValues(s, 3);
+    std::copy(values, values + 3, sceneData->attenuation);
 }
 
 void TextParser::parseAmbient(std::stringstream& s) {

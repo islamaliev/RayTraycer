@@ -6,22 +6,33 @@
 #include "Camera.h"
 #include "ProgressReporter.h"
 #include "IntersectionDetector.h"
+#include "ColorCalculator.h"
+
+void RayTracer::raytraceArea(unsigned index, unsigned count, Scene* scene, Image* image) const {
+    unsigned x, y;
+    for (unsigned i = index; i < count; i++) {
+        y = i / w;
+        x = i - y * w;
+        Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
+        Intersection* intersection = intersectionDetector->getIntersection(ray);
+        unsigned color = colorCalculator->calculate(intersection);
+        pushColor(image, color, x, y);
+        progressReporter->handleProgress(x, y);
+    }
+}
 
 Image* RayTracer::raytrace(Scene* scene) {
     init(scene);
     Image* image = new Image(w, h);
-    ProgressReporter progressReporter(scene->width, scene->height);
-    IntersectionDetector intersectionDetector(scene);
-    ColorCalculator colorCalculator(scene, &intersectionDetector);
-    for (unsigned y = 0; y < h; y++) {
-        for (unsigned x = 0; x < w; x++) {
-            Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
-            Intersection* intersection = intersectionDetector.getIntersection(ray);
-            unsigned color = colorCalculator.calculate(intersection);
-            pushColor(image, color, x, y);
-            progressReporter.handleProgress(x, y);
-        }
-    }
+    progressReporter = new ProgressReporter(scene->width, scene->height);
+    intersectionDetector = new IntersectionDetector(scene);
+    colorCalculator = new ColorCalculator(scene, intersectionDetector);
+
+    raytraceArea(0, w * h, scene, image);
+
+    delete progressReporter;
+    delete intersectionDetector;
+    delete colorCalculator;
     return image;
 }
 

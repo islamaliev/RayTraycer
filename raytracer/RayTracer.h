@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Ray.h"
-#include "ColorCalculator.h"
 
 class Image;
 class Camera;
@@ -9,6 +8,9 @@ class Scene;
 class Ray;
 class Intersection;
 class Object;
+class ProgressReporter;
+class IntersectionDetector;
+class ColorCalculator;
 
 class RayTracer {
 public:
@@ -19,14 +21,20 @@ public:
 private:
     void init(Scene* scene);
 
+    void raytraceArea(unsigned index, unsigned count, Scene* scene, Image* image) const;
+
     Ray* getRayThoughPixel(const Camera* camera, double x, double y) const;
 
     void pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const;
 
-    int w;
-    int h;
+    unsigned w;
+    unsigned h;
     double halfW;
     double halfH;
     double tanFOVX;
     double tanFOVY;
+
+    ProgressReporter* progressReporter;
+    IntersectionDetector* intersectionDetector;
+    ColorCalculator* colorCalculator;
 };

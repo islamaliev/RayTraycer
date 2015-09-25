@@ -5,16 +5,18 @@
 class ProgressReporter {
 public:
     ProgressReporter(unsigned width, unsigned height)
-        : total(width * height)
-        , width(width)
+        : width(width)
+        , total(width * height)
+        , current(0)
         , printed(0) {
     }
 
     void handleProgress(unsigned x, unsigned y);
 
 private:
-    unsigned total;
     unsigned width;
+    unsigned total;
+    unsigned current;
     unsigned printed;
 };
 

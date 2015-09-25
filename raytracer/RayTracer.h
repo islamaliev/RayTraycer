@@ -19,9 +19,11 @@ public:
     Image* raytrace(Scene* scene);
 
 private:
-    void init(Scene* scene);
+    void init();
 
-    void raytraceArea(unsigned index, unsigned count, Scene* scene, Image* image) const;
+    void raytraceArea(unsigned index, unsigned count, Image* image) const;
+
+    void runThreads(Image* image) const;
 
     Ray* getRayThoughPixel(const Camera* camera, double x, double y) const;
 
@@ -34,6 +36,7 @@ private:
     double tanFOVX;
     double tanFOVY;
 
+    Scene* scene;
     ProgressReporter* progressReporter;
     IntersectionDetector* intersectionDetector;
     ColorCalculator* colorCalculator;

@@ -1,3 +1,5 @@
+#include <iostream>
+#include <thread>
 #include "RayTracer.h"
 #include "Image.h"
 #include "Scene.h"
@@ -8,9 +10,9 @@
 #include "IntersectionDetector.h"
 #include "ColorCalculator.h"
 
-void RayTracer::raytraceArea(unsigned index, unsigned count, Scene* scene, Image* image) const {
+void RayTracer::raytraceArea(unsigned index, unsigned count, Image* image) const {
     unsigned x, y;
-    for (unsigned i = index; i < count; i++) {
+    for (unsigned i = index; i < index + count; i++) {
         y = i / w;
         x = i - y * w;
         Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
@@ -22,18 +24,43 @@ void RayTracer::raytraceArea(unsigned index, unsigned count, Scene* scene, Image
 }
 
 Image* RayTracer::raytrace(Scene* scene) {
-    init(scene);
+    this->scene = scene;
+    init();
     Image* image = new Image(w, h);
     progressReporter = new ProgressReporter(scene->width, scene->height);
     intersectionDetector = new IntersectionDetector(scene);
     colorCalculator = new ColorCalculator(scene, intersectionDetector);
 
-    raytraceArea(0, w * h, scene, image);
+    time_t start, end;
+    time(&start);
+
+    runThreads(image);
+//    raytraceArea(0, w * h, image);
+
+    time(&end);
+    std::cout << std::endl << difftime(end, start) << " seconds" << std::endl;
 
     delete progressReporter;
     delete intersectionDetector;
     delete colorCalculator;
     return image;
+}
+
+void RayTracer::runThreads(Image* image) const {
+    const unsigned threadsNum = 8;
+    std::thread threads[threadsNum - 1];
+    unsigned total = w * h;
+    unsigned areaCount = total / threadsNum;
+    for (unsigned i = 0; i < threadsNum - 1; i++) {
+        threads[i] = std::thread(&RayTracer::raytraceArea, this, i * areaCount, areaCount, image);
+    }
+    unsigned lastThreadIndex = (threadsNum - 1) * areaCount;
+    unsigned int count = total - lastThreadIndex;
+    raytraceArea(lastThreadIndex, count, image);
+
+    for (unsigned i = 0; i < threadsNum - 1; i++) {
+        threads[i].join();
+    }
 }
 
 Ray* RayTracer::getRayThoughPixel(const Camera* camera, double x, double y) const {
@@ -57,7 +84,7 @@ void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsi
     image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);
 }
 
-void RayTracer::init(Scene* scene) {
+void RayTracer::init() {
     w = scene->width;
     h = scene->height;
     halfW = w * 0.5f;

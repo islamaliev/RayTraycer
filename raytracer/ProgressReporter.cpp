@@ -4,8 +4,8 @@
 #include <sstream>
 
 void ProgressReporter::handleProgress(unsigned x, unsigned y) {
-    unsigned index = y * width + x;
-    unsigned percents = index * 100 / total;
+    current++;
+    unsigned percents = current * 100 / total;
     while (printed < percents) {
         printed++;
         char symbol('.');
@@ -17,7 +17,7 @@ void ProgressReporter::handleProgress(unsigned x, unsigned y) {
         std::cout << symbol << std::flush;
     }
 
-    if (index == total - 1) {
-        std::cout << std::endl << "done!";
+    if (current == total) {
+        std::cout << std::endl << "done!" << std::endl;
     }
 }

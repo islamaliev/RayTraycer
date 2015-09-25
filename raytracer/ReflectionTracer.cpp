@@ -4,6 +4,7 @@
 #include "IntersectionDetector.h"
 #include "ColorCalculator.h"
 #include "Scene.h"
+#include "RayGenerator.h"
 
 unsigned ReflectionTracer::findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth) const {
     if (++depth > scene->maxDepth) {
@@ -13,9 +14,8 @@ unsigned ReflectionTracer::findColor(const Intersection* const intersection, con
     double nDot = glm::dot(l, normal);
     vec3 doubleNormal = normal * nDot * 2.0;
 
-    Ray* ray = new Ray();
-    ray->dir = glm::vec4(doubleNormal - l, 0);
-    ray->pos = intersection->ray->pos + intersection->ray->dir * intersection->dist + ray->dir * 0.0001;
+    Ray* ray = RayGenerator().generate(intersection->ray->pos + intersection->ray->dir * intersection->dist, doubleNormal - l);
+
     Intersection* reflectedIntersection = intersectionDetector->getIntersection(ray);
     return colorCalculator->calculate(reflectedIntersection , depth);
 }

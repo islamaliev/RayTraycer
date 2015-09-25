@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "Camera.h"
 #include "IntersectionDetector.h"
+#include "RayGenerator.h"
 
 vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
         const vec3& diffuse, const vec3& specular, float shininess) const {
@@ -100,9 +101,8 @@ bool ColorCalculator::isLit(const glm::vec4& point, Light* light) const {
     } else {
         l = vec4(glm::normalize(vec3(light->position - point)), 0);
     }
-    Ray* ray = new Ray();
-    ray->pos = point + (l * 0.001);
-    ray->dir = l;
+
+    Ray* ray = RayGenerator().generate(point, l);
 
     Intersection* lightIntersection = intersectionDetector->getIntersection(ray);
     if (light->position.w == 1) {

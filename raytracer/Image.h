@@ -4,10 +4,12 @@
 #include <alloca.h>
 
 struct Image {
-    Image(int w, int h): width(w), height(h) {
-//        data = (unsigned char*) alloca(width * height * 3 * sizeof(unsigned char));
+    Image(int w, int h)
+        : width(w)
+        , height(h) {
+        data = new unsigned char[width * height * 3];
     }
     const int width;
     const int height;
-    unsigned char data[640 * 480 * 3];
+    unsigned char* data;
 };

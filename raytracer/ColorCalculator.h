@@ -18,6 +18,11 @@ public:
         , reflectionTracer(scene, intersectionDetector, this) {
     }
 
+    ~ColorCalculator() {
+        scene = nullptr;
+        intersectionDetector = nullptr;
+    }
+
     unsigned calculate(const Intersection* intersection, unsigned depth = 0) const;
 
 private:
@@ -27,13 +32,13 @@ private:
     unsigned convertToInt(const glm::vec3& color) const;
     glm::vec3 convertToVec(unsigned color) const;
 
-    vec3 computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
+    glm::vec3 computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
             const vec3& diffuse, const vec3& specular, float shininess) const;
 
-    bool isLit(const glm::vec4& point, Light* light) const;
+    bool isLit(const glm::vec4& point, Light* light, glm::vec3& lightDir, double& lightDistance) const;
 
-    Scene* const scene;
-    IntersectionDetector* const intersectionDetector;
+    const Scene* scene;
+    const IntersectionDetector* intersectionDetector;
     ReflectionTracer reflectionTracer;
 };
 

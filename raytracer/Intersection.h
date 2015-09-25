@@ -1,12 +1,20 @@
 #pragma once
 
+#include "Ray.h"
 
 class Object;
-class Ray;
 
 struct Intersection {
-    Intersection(double dist, Ray* ray, Object* object): dist(dist), ray(ray), object(object) {};
+    Intersection(double dist, Ray* ray, Object* object): dist(dist), ray(ray), object(object) {
+        point = ray->pos + ray->dir * dist;
+    };
+
+    ~Intersection() {
+        ray = nullptr;
+        object = nullptr;
+    }
     double dist;
-    Object* object;
-    Ray* ray;
+    glm::vec4 point;
+    const Object* object;
+    const Ray* ray;
 };

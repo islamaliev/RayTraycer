@@ -14,7 +14,7 @@ unsigned ReflectionTracer::findColor(const Intersection* const intersection, con
     double nDot = glm::dot(l, normal);
     vec3 doubleNormal = normal * nDot * 2.0;
 
-    Ray* ray = RayGenerator().generate(intersection->ray->pos + intersection->ray->dir * intersection->dist, doubleNormal - l);
+    Ray* ray = RayGenerator().generate(intersection->point, doubleNormal - l);
 
     Intersection* reflectedIntersection = intersectionDetector->getIntersection(ray);
     return colorCalculator->calculate(reflectedIntersection , depth);

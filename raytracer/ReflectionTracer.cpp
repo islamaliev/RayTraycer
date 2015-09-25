@@ -11,8 +11,8 @@ unsigned ReflectionTracer::findColor(const Intersection* const intersection, con
         return 0;
     }
     const vec3& l = -vec3(intersection->ray->dir);
-    double nDot = glm::dot(l, normal);
-    vec3 doubleNormal = normal * nDot * 2.0;
+    double nDot(glm::dot(l, normal));
+    const vec3& doubleNormal = normal * nDot * 2.0;
 
     Ray* ray = RayGenerator().generate(intersection->point, doubleNormal - l);
 

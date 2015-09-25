@@ -25,11 +25,11 @@ Image* RayTracer::raytrace(Scene* scene) {
     return image;
 }
 
-Ray* RayTracer::getRayThoughPixel(const Camera* camera, float x, float y) const {
-    const float U = (x - halfW) / halfW;
-    const float V = (halfH - y) / halfH;
-    float alpha = tanFOVX * U;
-    float beta = tanFOVY * V;
+Ray* RayTracer::getRayThoughPixel(const Camera* camera, double x, double y) const {
+    const double U = (x - halfW) / halfW;
+    const double V = (halfH - y) / halfH;
+    double alpha = tanFOVX * U;
+    double beta = tanFOVY * V;
 
     Ray* ray = new Ray();
     ray->pos = vec4(camera->pos, 1);
@@ -51,7 +51,7 @@ void RayTracer::init(Scene* scene) {
     h = scene->height;
     halfW = w * 0.5f;
     halfH = h * 0.5f;
-    float toRadian = (float) (M_PI / 360.f);
-    tanFOVY = tanf(scene->camera->fovy * toRadian);
+    double toRadian = M_PI / 360.0;
+    tanFOVY = tan(scene->camera->fovy * toRadian);
     tanFOVX = tanFOVY * w / h;
 }

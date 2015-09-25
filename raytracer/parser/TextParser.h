@@ -28,8 +28,6 @@ private:
     typedef glm::vec4 vec4;
     typedef void (TextParser::*ParseFunc)(std::stringstream&);
 
-    void matrixTransform(float* values);
-
     void rightMultiply(const mat4& matrix);
 
     bool readValues(std::stringstream& s, const int numvals);

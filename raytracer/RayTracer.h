@@ -19,14 +19,14 @@ public:
 private:
     void init(Scene* scene);
 
-    Ray* getRayThoughPixel(const Camera* camera, float x, float y) const;
+    Ray* getRayThoughPixel(const Camera* camera, double x, double y) const;
 
     void pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const;
 
     int w;
     int h;
-    float halfW;
-    float halfH;
-    float tanFOVX;
-    float tanFOVY;
+    double halfW;
+    double halfH;
+    double tanFOVX;
+    double tanFOVY;
 };

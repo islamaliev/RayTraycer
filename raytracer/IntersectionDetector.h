@@ -15,7 +15,7 @@ public:
     Intersection* getIntersection(Ray* ray) const;
 
 private:
-    float intersect(const Ray* ray, const Object* object) const;
+    double intersect(const Ray* ray, const Object* object) const;
 
     Scene* scene;
 };

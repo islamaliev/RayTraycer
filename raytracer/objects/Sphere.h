@@ -12,7 +12,7 @@ public:
         , radius(radius)
     {}
 
-    float intersect(const Ray* ray) const override;
+    double intersect(const Ray* ray) const override;
 
     glm::vec3 getNormal(glm::vec4 point) override;
 

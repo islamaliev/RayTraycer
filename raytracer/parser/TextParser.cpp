@@ -10,13 +10,6 @@
 #include "SphereData.h"
 #include "glm/gtc/matrix_transform.hpp"
 
-void TextParser::matrixTransform(float* values) {
-    mat4 transform = transforms.top();
-    vec4 valvec = vec4(values[0], values[1], values[2], values[3]);
-    vec4 newval = transform * valvec;
-    for (int i = 0; i < 4; i++) values[i] = newval[i];
-}
-
 void TextParser::rightMultiply(const mat4& matrix) {
     mat4& T = transforms.top();
     T = T * matrix;
@@ -177,7 +170,7 @@ void TextParser::parseTranslate(std::stringstream& s) {
 void TextParser::parseRotate(std::stringstream& s) {
     readValues(s, 4);
     mat4 rotateM(1.0f);
-    rotateM = glm::rotate(rotateM, values[3], glm::vec3(values[0], values[1], values[2]));
+    rotateM = glm::rotate(rotateM, (double) values[3], glm::vec3(values[0], values[1], values[2]));
     rightMultiply(rotateM);
 }
 

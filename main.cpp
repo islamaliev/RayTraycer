@@ -1,6 +1,6 @@
 #include <iostream>
 #include "FreeImage.h"
-#include "raytracer/RayTracer.h"
+#include "RayTracer.h"
 #include "Image.h"
 #include "TextParser.h"
 #include "SceneCreator.h"

@@ -16,6 +16,6 @@ public:
     std::string outputFile;
     std::vector<Object*> objects;
     std::vector<Light*> lights;
-    float attenuation[3];
+    double attenuation[3];
     Camera* camera;
 };

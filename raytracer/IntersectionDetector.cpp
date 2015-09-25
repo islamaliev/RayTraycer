@@ -5,8 +5,8 @@
 #include "Intersection.h"
 
 Intersection* IntersectionDetector::getIntersection(Ray* ray) const {
-    float minDist = 0;
-    float currentDist;
+    double minDist = 0;
+    double currentDist;
     Object* hitObject = nullptr;
     std::vector<Object*>& objects = scene->objects;
     for (auto it = objects.begin(); it != objects.end(); it++) {
@@ -19,6 +19,6 @@ Intersection* IntersectionDetector::getIntersection(Ray* ray) const {
     return new Intersection(minDist, ray, hitObject);
 }
 
-float IntersectionDetector::intersect(const Ray* ray, const Object* object) const {
+double IntersectionDetector::intersect(const Ray* ray, const Object* object) const {
     return object->intersect(ray);
 }

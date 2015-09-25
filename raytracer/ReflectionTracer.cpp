@@ -10,12 +10,12 @@ unsigned ReflectionTracer::findColor(const Intersection* const intersection, con
         return 0;
     }
     const vec3& l = -vec3(intersection->ray->dir);
-    float nDot = glm::dot(l, normal);
-    vec3 doubleNormal = normal * nDot * 2.f;
+    double nDot = glm::dot(l, normal);
+    vec3 doubleNormal = normal * nDot * 2.0;
 
     Ray* ray = new Ray();
     ray->dir = glm::vec4(doubleNormal - l, 0);
-    ray->pos = intersection->ray->pos + intersection->ray->dir * intersection->dist + ray->dir * 0.001f;
+    ray->pos = intersection->ray->pos + intersection->ray->dir * intersection->dist + ray->dir * 0.0001;
     Intersection* reflectedIntersection = intersectionDetector->getIntersection(ray);
     return colorCalculator->calculate(reflectedIntersection , depth);
 }

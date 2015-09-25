@@ -9,6 +9,11 @@ struct Image {
         , height(h) {
         data = new unsigned char[width * height * 3];
     }
+
+    ~Image() {
+        delete[] data;
+    }
+
     const int width;
     const int height;
     unsigned char* data;

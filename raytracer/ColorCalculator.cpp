@@ -27,6 +27,7 @@ glm::vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& light
 
 unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const {
     if (intersection->dist <= 0) {
+        delete intersection;
         return 0;
     }
 
@@ -57,6 +58,8 @@ unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned d
     if (reflectedColor != 0) {
         finalcolor += convertToVec(reflectedColor) * obj->specular;
     }
+
+    delete intersection;
 
     if (finalcolor.r > 1) finalcolor.r = 1;
     if (finalcolor.g > 1) finalcolor.g = 1;
@@ -97,13 +100,15 @@ bool ColorCalculator::isLit(const glm::vec4& point, Light* light, glm::vec3& lig
 
     Intersection* lightIntersection = intersectionDetector->getIntersection(ray);
     const double& distToIntersection = lightIntersection->dist;
+    bool returnValue(true);
     if (light->position.w == 1) {
         lightDistance = glm::length(vec3(light->position - point));
         if (distToIntersection != 0 && distToIntersection < lightDistance) {
-            return false;
+            returnValue = false;
         }
     } else if (distToIntersection > 0) {
-        return false;
+        returnValue = false;
     }
-    return true;
+    delete lightIntersection;
+    return returnValue;
 }

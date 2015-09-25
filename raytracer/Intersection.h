@@ -10,6 +10,7 @@ struct Intersection {
     };
 
     ~Intersection() {
+        delete ray;
         ray = nullptr;
         object = nullptr;
     }

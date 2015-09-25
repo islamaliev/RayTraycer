@@ -16,15 +16,15 @@ double Sphere::intersect(const Ray* ray) const {
     glm::vec4 diff = rayPos - position;
     double a = glm::dot(rayDir, rayDir);
     double b = 2 * glm::dot(rayDir, diff);
-    double c = glm::dot(diff, diff) - powf(radius, 2);
-    double D = powf(b, 2) - 4 * a * c;
+    double c = glm::dot(diff, diff) - pow(radius, 2);
+    double D = pow(b, 2) - 4 * a * c;
     if (D < 0) {
         return 0;
     }
     if (D == 0) {
         return -b / (2 * a);
     }
-    double sqD = sqrtf(D);
+    double sqD = sqrt(D);
     double t1 = -(b + sqD) / (2 * a);
     double t2 = (sqD - b) / (2 * a);
 
@@ -46,7 +46,7 @@ double Sphere::intersect(const Ray* ray) const {
     return glm::length(p);
 }
 
-glm::vec3 Sphere::getNormal(glm::vec4 point) {
+glm::vec3 Sphere::getNormal(const glm::vec4& point) const {
     const mat4& inv = getInverseTransform();
     vec4 objPoint = inv * point;
     vec3 normDir = glm::normalize(vec3(objPoint - position));

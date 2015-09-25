@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "glm/glm.hpp"
 
 class Object;
 class Camera;
@@ -10,6 +11,10 @@ class Light;
 
 class Scene {
 public:
+    Scene()
+        : camera(nullptr) {
+    }
+
     unsigned width;
     unsigned height;
     unsigned maxDepth;

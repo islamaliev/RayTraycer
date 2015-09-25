@@ -22,4 +22,5 @@ void SceneDataDestructor::destruct(SceneData* sceneData) {
     clearVector(sceneData->spheres);
     clearVector(sceneData->pointLights);
     clearVector(sceneData->directionalLights);
+    delete sceneData;
 }

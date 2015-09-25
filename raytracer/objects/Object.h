@@ -12,6 +12,8 @@ public:
         , inverseTransform(1.f)
     {}
 
+    virtual ~Object() {};
+
     virtual double intersect(const Ray* ray) const { return 0; }
 
     virtual glm::vec3 getNormal(const glm::vec4& point) const = 0;

@@ -6,6 +6,7 @@
 #include "SceneCreator.h"
 #include "Scene.h"
 #include "SceneData.h"
+#include "SceneDestructor.h"
 
 int main(int argc, const char * argv[]) {
     FreeImage_Initialise();
@@ -24,5 +25,7 @@ int main(int argc, const char * argv[]) {
     FreeImage_Save(FIF_PNG, img, filename.c_str(), 0);
 
     FreeImage_DeInitialise();
+    SceneDestructor().destruct(scene);
+    delete image;
     return 0;
 }

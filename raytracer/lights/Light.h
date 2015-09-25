@@ -11,6 +11,8 @@ public:
         , color(col) {
     }
 
+    virtual ~Light() {};
+
     glm::vec4 position;
     glm::vec3 color;
 };

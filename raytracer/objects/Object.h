@@ -14,10 +14,10 @@ public:
 
     virtual double intersect(const Ray* ray) const { return 0; }
 
-    virtual glm::vec3 getNormal(glm::vec4 point) = 0;
+    virtual glm::vec3 getNormal(const glm::vec4& point) const = 0;
 
     const glm::mat4& getTransform() const { return transform; }
-    void setTransform(glm::mat4 matrix);
+    void setTransform(const glm::mat4& matrix);
 
     const glm::mat4& getInverseTransform() const { return inverseTransform; }
 

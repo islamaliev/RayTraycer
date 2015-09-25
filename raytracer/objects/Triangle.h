@@ -13,7 +13,7 @@ public:
 
     double intersect(const Ray* ray) const override;
 
-    glm::vec3 getNormal(glm::vec4 point) override;
+    glm::vec3 getNormal(const glm::vec4& point) const override;
 
     std::vector<const vec3*> verticies;
 

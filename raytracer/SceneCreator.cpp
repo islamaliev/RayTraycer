@@ -10,6 +10,7 @@
 #include "DirectionalLight.h"
 #include "PointLightData.h"
 #include "DirectionalLightData.h"
+#include "SceneDataDestructor.h"
 
 Scene* SceneCreator::create(SceneData* sceneData) {
     this->sceneData = sceneData;
@@ -18,6 +19,7 @@ Scene* SceneCreator::create(SceneData* sceneData) {
     initializeObjects();
     initializeCamera();
     initializeLights();
+    SceneDataDestructor().destruct(sceneData);
     return scene;
 }
 
@@ -60,11 +62,12 @@ void SceneCreator::initializeProperties() {
 }
 
 void SceneCreator::initializeTriangles() {
+    scene->verticies = sceneData->verticies;
     for (auto it = sceneData->triangles.begin(); it != sceneData->triangles.end(); it++) {
         TriangleData* const& data = *it;
-        const glm::vec3& v1 = sceneData->verticies[data->indecies[0]];
-        const glm::vec3& v2 = sceneData->verticies[data->indecies[1]];
-        const glm::vec3& v3 = sceneData->verticies[data->indecies[2]];
+        const glm::vec3& v1 = scene->verticies[data->indecies[0]];
+        const glm::vec3& v2 = scene->verticies[data->indecies[1]];
+        const glm::vec3& v3 = scene->verticies[data->indecies[2]];
         processAndAdd(data, new Triangle(&v1, &v2, &v3));
     }
 }

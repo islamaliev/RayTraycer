@@ -20,6 +20,10 @@ public:
         ambient[2] = 0.2f;
     }
 
+    ~TextParser() {
+        sceneData = nullptr;
+    }
+
     SceneData* parse(const char* filename);
 
 private:

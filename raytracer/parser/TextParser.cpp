@@ -137,7 +137,8 @@ void TextParser::parseMaxverts(std::stringstream& s) {
 }
 
 void TextParser::parseMaxvertnorms(std::stringstream& s) {
-
+    readValues(s, 1);
+    sceneData->maxVertNorms = (int) values[0];
 }
 
 void TextParser::parseVertex(std::stringstream& s) {
@@ -146,7 +147,7 @@ void TextParser::parseVertex(std::stringstream& s) {
 }
 
 void TextParser::parseVertexnormal(std::stringstream& s) {
-
+    // vertexnormal x y z nx ny nz
 }
 
 void TextParser::parseTri(std::stringstream& s) {
@@ -157,7 +158,7 @@ void TextParser::parseTri(std::stringstream& s) {
 }
 
 void TextParser::parseTrinormal(std::stringstream& s) {
-
+    // trinormal v1 v2 v3
 }
 
 void TextParser::parseTranslate(std::stringstream& s) {

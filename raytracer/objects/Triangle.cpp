@@ -58,8 +58,7 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
     return (u >= 0) && (v >= 0) && (u + v < 1);
 }
 
-glm::vec3 Triangle::getNormal(glm::vec4 point)
-{
+glm::vec3 Triangle::getNormal(const glm::vec4& point) const {
     const vec3& side1(*verticies[1] - *verticies[0]);
     const vec3& side2(*verticies[2] - *verticies[0]);
     const vec3& normal = glm::normalize(glm::cross(side1, side2));

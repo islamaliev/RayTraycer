@@ -19,4 +19,7 @@ public:
 
 private:
     bool isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, const vec3& c) const;
+
+    mutable bool hasNormal;
+    mutable vec3 normal;
 };

@@ -9,14 +9,14 @@ Triangle::Triangle(const vec3* v1, const vec3* v2, const vec3* v3) {
 }
 
 double Triangle::intersect(const Ray* ray) const {
-    mat4 invM = getInverseTransform();
+    const mat4& invM = getInverseTransform();
 
     vec4 rayPos = invM * ray->pos;
     vec4 rayDir = invM * ray->dir;
 
     const vec3& side1(*verticies[1] - *verticies[0]);
     const vec3& side2(*verticies[2] - *verticies[0]);
-    vec4 n = glm::normalize(vec4(glm::cross(side1, side2), 0));
+    const vec4& n = glm::normalize(vec4(glm::cross(side1, side2), 0));
 
     double d = glm::dot(rayDir, n);
     if (d == 0) {
@@ -30,7 +30,7 @@ double Triangle::intersect(const Ray* ray) const {
         return 0;
     }
 
-    vec4 p = rayPos + (rayDir * t);
+    vec4 p(rayPos + (rayDir * t));
     if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))
     {
         p = ray->pos - getTransform() * p;
@@ -59,9 +59,14 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
 }
 
 glm::vec3 Triangle::getNormal(const glm::vec4& point) const {
+    if (hasNormal) {
+        return normal;
+    }
     const vec3& side1(*verticies[1] - *verticies[0]);
     const vec3& side2(*verticies[2] - *verticies[0]);
-    const vec3& normal = glm::normalize(glm::cross(side1, side2));
-    const vec3& transformedNormal = vec3(glm::transpose(getInverseTransform()) * vec4(normal, 0));
-    return glm::normalize(transformedNormal);
+    const vec3& n = glm::normalize(glm::cross(side1, side2));
+    const vec3& transformedNormal = vec3(glm::transpose(getInverseTransform()) * vec4(n, 0));
+    normal = glm::normalize(transformedNormal);
+    hasNormal = true;
+    return normal;
 }

@@ -9,6 +9,7 @@
 
 class TriangleData;
 class SphereData;
+class PlaneData;
 class PointLightData;
 class DirectionalLightData;
 
@@ -30,6 +31,7 @@ struct SceneData {
     std::vector<glm::vec3> verticies;
     std::vector<TriangleData*> triangles;
     std::vector<SphereData*> spheres;
+    std::vector<PlaneData*> planes;
     std::vector<PointLightData*> pointLights;
     std::vector<DirectionalLightData*> directionalLights;
     float attenuation[3];

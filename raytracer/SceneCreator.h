@@ -30,6 +30,8 @@ private:
 
     void initializeSpheres();
 
+    void initializePlanes();
+
     void initializeProperties();
 
     void initializeLights();

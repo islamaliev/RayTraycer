@@ -7,7 +7,7 @@
 
 class Sphere : public Object {
 public:
-    Sphere(glm::vec3 pos, float radius)
+    Sphere(const glm::vec3& pos, float radius)
         : position(pos, 1)
         , radius(radius)
     {}

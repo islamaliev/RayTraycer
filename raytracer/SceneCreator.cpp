@@ -11,6 +11,8 @@
 #include "PointLightData.h"
 #include "DirectionalLightData.h"
 #include "SceneDataDestructor.h"
+#include "Plane.h"
+//#include "PlaneData.h"
 
 Scene* SceneCreator::create(SceneData* sceneData) {
     this->sceneData = sceneData;
@@ -26,6 +28,7 @@ Scene* SceneCreator::create(SceneData* sceneData) {
 void SceneCreator::initializeObjects() {
     initializeTriangles();
     initializeSpheres();
+    initializePlanes();
 }
 
 void SceneCreator::initializeCamera() {
@@ -77,6 +80,15 @@ void SceneCreator::initializeSpheres() {
         SphereData* const& data = *it;
         Sphere* sphere = new Sphere(glm::vec3(data->position[0], data->position[1], data->position[2]), data->radius);
         processAndAdd(data, sphere);
+    }
+}
+
+void SceneCreator::initializePlanes() {
+    for (auto it = sceneData->planes.begin(); it != sceneData->planes.end(); it++) {
+        PlaneData* const& data = *it;
+        Plane* plane = new Plane(glm::vec3(data->position[0], data->position[1], data->position[2]),
+                glm::vec3(data->normal[0], data->normal[1], data->normal[2]), data->w, data->h, data->rotation);
+        processAndAdd(data, plane);
     }
 }
 

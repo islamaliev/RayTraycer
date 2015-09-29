@@ -1,11 +1,7 @@
 #pragma once
 
 
-#include <vector>
 #include "Object.h"
-#include "glm/glm.hpp"
-#include "Camera.h"
-
 
 class Triangle : public Object {
 public:

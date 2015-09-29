@@ -48,6 +48,7 @@ private:
     void parseCamera(std::stringstream& s);
     void parseSphere(std::stringstream& s);
     void parsePlane(std::stringstream& s);
+    void parseBox(std::stringstream& s);
     void parseMaxverts(std::stringstream& s);
     void parseMaxvertnorms(std::stringstream& s);
     void parseVertex(std::stringstream& s);

@@ -3,13 +3,14 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "glm/gtc/matrix_transform.hpp"
 #include "SceneData.h"
 #include "PointLightData.h"
 #include "DirectionalLightData.h"
 #include "TriangleData.h"
 #include "SphereData.h"
 #include "PlaneData.h"
-#include "glm/gtc/matrix_transform.hpp"
+#include "BoxData.h"
 
 void TextParser::rightMultiply(const mat4& matrix) {
     mat4& T = transforms.top();
@@ -74,6 +75,7 @@ void TextParser::initInstructionsMap() {
     instructionsMap["camera"] = &TextParser::parseCamera;
     instructionsMap["sphere"] = &TextParser::parseSphere;
     instructionsMap["plane"] = &TextParser::parsePlane;
+    instructionsMap["box"] = &TextParser::parseBox;
     instructionsMap["maxverts"] = &TextParser::parseMaxverts;
     instructionsMap["maxvertnorms"] = &TextParser::parseMaxvertnorms;
     instructionsMap["vertex"] = &TextParser::parseVertex;
@@ -138,6 +140,13 @@ void TextParser::parsePlane(std::stringstream& s) {
     PlaneData* plane = new PlaneData(values, &values[3], values[6], values[7], values[8]);
     addObjectsData(plane);
     sceneData->planes.push_back(plane);
+}
+
+void TextParser::parseBox(std::stringstream& s) {
+    readValues(s, 4);
+    BoxData* box = new BoxData(values, values[3]);
+    addObjectsData(box);
+    sceneData->boxes.push_back(box);
 }
 
 void TextParser::parseMaxverts(std::stringstream& s) {

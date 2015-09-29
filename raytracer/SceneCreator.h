@@ -32,6 +32,8 @@ private:
 
     void initializePlanes();
 
+    void initializeBoxes();
+
     void initializeProperties();
 
     void initializeLights();

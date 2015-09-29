@@ -1,14 +1,14 @@
-#ifndef HW3_SPHERE_H
-#define HW3_SPHERE_H
+#ifndef HW3_BOX_H
+#define HW3_BOX_H
 
 
 #include "Object.h"
 
-class Sphere : public Object {
+class Box : public Object {
 public:
-    Sphere(const glm::vec3& pos, float radius)
+    Box(const glm::vec3& pos, float size)
         : position(pos, 1)
-        , radius(radius)
+        , size(size)
     {}
 
     double intersect(const Ray* ray) const override;
@@ -16,8 +16,8 @@ public:
     glm::vec3 getNormal(const glm::vec4& point) const override;
 
     glm::vec4 position;
-    float radius;
+    float size;
 };
 
 
-#endif //HW3_SPHERE_H
+#endif //HW3_BOX_H

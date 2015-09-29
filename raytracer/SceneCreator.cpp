@@ -12,7 +12,9 @@
 #include "DirectionalLightData.h"
 #include "SceneDataDestructor.h"
 #include "Plane.h"
-//#include "PlaneData.h"
+#include "PlaneData.h"
+#include "Box.h"
+#include "BoxData.h"
 
 Scene* SceneCreator::create(SceneData* sceneData) {
     this->sceneData = sceneData;
@@ -89,6 +91,14 @@ void SceneCreator::initializePlanes() {
         Plane* plane = new Plane(glm::vec3(data->position[0], data->position[1], data->position[2]),
                 glm::vec3(data->normal[0], data->normal[1], data->normal[2]), data->w, data->h, data->rotation);
         processAndAdd(data, plane);
+    }
+}
+
+void SceneCreator::initializeBoxes() {
+    for (auto it = sceneData->boxes.begin(); it != sceneData->boxes.end(); it++) {
+        BoxData* const& data = *it;
+        Box* box = new Box(glm::vec3(data->position[0], data->position[1], data->position[2]), data->size);
+        processAndAdd(data, box);
     }
 }
 

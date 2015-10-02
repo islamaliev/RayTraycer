@@ -1,77 +1,25 @@
-#include "gmock/gmock.h"
+#include <vector>
 #include "Triangle.h"
-#include "glm/gtc/matrix_transform.hpp"
-#include "Ray.h"
+#include "BaseObjectTest.h"
 
-using namespace testing;
+const glm::vec3 V1 = glm::vec3(1, 1, 0);
+const glm::vec3 V2 = glm::vec3(-1, -1, 0);
+const glm::vec3 V3 = glm::vec3(1, -1, 0);
 
-const float DELTA = 0.02f;
-
-const glm::vec3 V1 = vec3(1, 1, 0);
-const glm::vec3 V2 = vec3(-1, -1, 0);
-const glm::vec3 V3 = vec3(1, -1, 0);
-
-class TriangleTest : public testing::Test {
+class TriangleTest : public BaseObjectTest {
 public:
-    TriangleTest()
-        : triangle(&V1, &V2, &V3)
-        , matrix(1.f) {}
+    Object* createObject() override {
+        return new Triangle(glm::mat4(1), &V1, &V2, &V3);
+    };
 
-    void SetUp() override {
-        triangle.setTransform(matrix);
-    }
-
-    Triangle triangle;
-
-private:
-    glm::mat4 matrix;
-};
-
-class TriangleIntersectionTest : public TriangleTest {
-public:
-    void assertIntersection(float rayX, float rayY, float rayZ, float dirX, float dirY, float dirZ, float dist) {
-        Ray* ray = new Ray();
-        ray->pos = vec4(rayX, rayY, rayZ, 1);
-        ray->dir = vec4(dirX, dirY, dirZ, 0);
-        const float actDist = triangle.intersect(ray);
-        EXPECT_TRUE(IntersectionMatch(ray, dist, actDist));
-    }
-
-private:
-    ::testing::AssertionResult IntersectionMatch(Ray* ray, float expDist, float actDist) {
-        if (fabsf(expDist - actDist) > DELTA) {
-            const vec4& p = ray->pos;
-            const vec4& d = ray->dir;
-            return ::testing::AssertionFailure() << "ray(" << p.x << ", " << p.y << ", " << p.z << ") -> ("
-                    << d.x << ", " << d.y << ", " << d.z << "), expected distanse: " << expDist
-                    << ", actual: " << actDist;
-        }
-        return ::testing::AssertionSuccess();
+    Triangle* getTriangle() {
+        return (Triangle*) object;
     }
 };
 
-class TriangleNormalTest : public TriangleTest {
-public:
-    glm::vec3 getNormal() {
-        glm::vec4 point(1, 1, 1, 1);
-        return triangle.getNormal(point);
-    }
+class TriangleIntersectionTest : public TriangleTest {};
 
-    void assertNormals(float x, float y, float z) {
-        glm::vec3 n = getNormal();
-        EXPECT_TRUE(NormalMatch(x, y, z, n.x, n.y, n.z));
-    }
-
-private:
-    ::testing::AssertionResult NormalMatch(float x1, float y1, float z1, float x2, float y2, float z2) {
-        if (fabsf(x1 - x2) > DELTA || fabsf(y1 - y2) > DELTA || fabsf(z1 - z2) > DELTA) {
-            return ::testing::AssertionFailure() << "expected(" << x1 << ", " << y1 << ", " << z1
-                    << ") != actual(" << x2 << ", " << y2 << ", " << z2 << ")";
-        }
-
-        return ::testing::AssertionSuccess();
-    }
-};
+class TriangleNormalTest : public TriangleTest {};
 
 TEST_F(TriangleIntersectionTest, PerpendicularRay) {
     assertIntersection(0.5f, -0.5f, 1, 0, 0, -1, 1);
@@ -92,5 +40,5 @@ TEST_F(TriangleIntersectionTest, ArbitraryRay) {
 }
 
 TEST_F(TriangleNormalTest, Default) {
-    assertNormals(0, 0, 1);
+    assertNormal(0, 0, 1);
 }

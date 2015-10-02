@@ -1,5 +1,4 @@
-#ifndef HW3_DIRECTIONALLIGHT_H
-#define HW3_DIRECTIONALLIGHT_H
+#pragma once
 
 
 #include "Light.h"
@@ -10,6 +9,3 @@ public:
         : Light(glm::vec4(glm::normalize(pos), 0), col) {
     }
 };
-
-
-#endif //HW3_DIRECTIONALLIGHT_H

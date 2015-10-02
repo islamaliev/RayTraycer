@@ -1,5 +1,4 @@
-#ifndef HW3_DIRECTIONALLIGHTDATA_H
-#define HW3_DIRECTIONALLIGHTDATA_H
+#pragma once
 
 
 #include "LightData.h"
@@ -13,6 +12,3 @@ public:
 
     float direction[3];
 };
-
-
-#endif //HW3_DIRECTIONALLIGHTDATA_H

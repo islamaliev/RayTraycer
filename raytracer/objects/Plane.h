@@ -1,5 +1,4 @@
-#ifndef HW3_PLANE_H
-#define HW3_PLANE_H
+#pragma once
 
 
 #include "Object.h"
@@ -23,6 +22,3 @@ public:
     float h;
     float rotation;
 };
-
-
-#endif //HW3_PLANE_H

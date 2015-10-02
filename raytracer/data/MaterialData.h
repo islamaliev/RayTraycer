@@ -1,5 +1,4 @@
-#ifndef HW3_MATERIALDATA_H
-#define HW3_MATERIALDATA_H
+#pragma once
 
 
 struct MaterialData {
@@ -8,6 +7,3 @@ struct MaterialData {
     float emission[3];
     float shininess;
 };
-
-
-#endif //HW3_MATERIALDATA_H

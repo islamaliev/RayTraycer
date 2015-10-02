@@ -1,5 +1,4 @@
-#ifndef HW3_POINTLIGHT_H
-#define HW3_POINTLIGHT_H
+#pragma once
 
 
 #include "Light.h"
@@ -10,6 +9,3 @@ public:
         : Light(glm::vec4(pos, 1), col) {
     }
 };
-
-
-#endif //HW3_POINTLIGHT_H

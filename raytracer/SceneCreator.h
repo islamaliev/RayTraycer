@@ -1,5 +1,5 @@
-#ifndef HW3_SCENEINITIALIZER_H
-#define HW3_SCENEINITIALIZER_H
+#pragma once
+
 
 #include "ObjectData.h"
 #include "Object.h"
@@ -43,6 +43,3 @@ private:
     Scene* scene;
     SceneData* sceneData;
 };
-
-
-#endif //HW3_SCENEINITIALIZER_H

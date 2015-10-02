@@ -1,5 +1,4 @@
-#ifndef HW3_BOX_H
-#define HW3_BOX_H
+#pragma once
 
 
 #include "Object.h"
@@ -18,6 +17,3 @@ public:
     glm::vec4 position;
     float size;
 };
-
-
-#endif //HW3_BOX_H

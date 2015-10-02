@@ -1,5 +1,5 @@
-#ifndef HW3_RAYGENERATOR_H
-#define HW3_RAYGENERATOR_H
+#pragma once
+
 
 #include "glm/glm.hpp"
 
@@ -14,6 +14,3 @@ public:
 private:
     static const double SHOOT_OFFSET;
 };
-
-
-#endif //HW3_RAYGENERATOR_H

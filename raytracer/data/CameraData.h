@@ -1,5 +1,4 @@
-#ifndef HW3_CAMERADATA_H
-#define HW3_CAMERADATA_H
+#pragma once
 
 
 struct CameraData {
@@ -8,6 +7,3 @@ struct CameraData {
     float up[3];
     float fovy;
 };
-
-
-#endif //HW3_CAMERADATA_H

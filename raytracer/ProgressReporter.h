@@ -1,5 +1,4 @@
-#ifndef HW3_PROGRESSREPORTER_H
-#define HW3_PROGRESSREPORTER_H
+#pragma once
 
 
 class ProgressReporter {
@@ -19,6 +18,3 @@ private:
     unsigned current;
     unsigned printed;
 };
-
-
-#endif //HW3_PROGRESSREPORTER_H

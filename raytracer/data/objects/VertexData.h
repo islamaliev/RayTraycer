@@ -1,5 +1,4 @@
-#ifndef HW3_VERTEXDATA_H
-#define HW3_VERTEXDATA_H
+#pragma once
 
 
 struct VertexData {
@@ -7,6 +6,3 @@ struct VertexData {
     bool hasNormal;
     float normal[3];
 };
-
-
-#endif //HW3_VERTEXDATA_H

@@ -1,5 +1,4 @@
-#ifndef HW3_PLANEDATA_H
-#define HW3_PLANEDATA_H
+#pragma once
 
 
 #import "ObjectData.h"
@@ -19,6 +18,3 @@ struct PlaneData : public ObjectData {
     float position[3];
     float normal[3];
 };
-
-
-#endif //HW3_PLANEDATA_H

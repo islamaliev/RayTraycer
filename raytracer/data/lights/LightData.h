@@ -1,5 +1,4 @@
-#ifndef HW3_LIGHTDATA_H
-#define HW3_LIGHTDATA_H
+#pragma once
 
 
 #include "LightAttenuationData.h"
@@ -16,6 +15,3 @@ public:
 protected:
     void copyf3(float src[3], float dest[3]);
 };
-
-
-#endif //HW3_LIGHTDATA_H

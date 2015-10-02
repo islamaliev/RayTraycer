@@ -1,5 +1,4 @@
-#ifndef HW3_INTERSECTIONDETECTOR_H
-#define HW3_INTERSECTIONDETECTOR_H
+#pragma once
 
 
 class Intersection;
@@ -19,6 +18,3 @@ private:
 
     Scene* scene;
 };
-
-
-#endif //HW3_INTERSECTIONDETECTOR_H

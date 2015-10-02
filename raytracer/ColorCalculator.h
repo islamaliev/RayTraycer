@@ -1,5 +1,4 @@
-#ifndef HW3_COLORCALCULATOR_H
-#define HW3_COLORCALCULATOR_H
+#pragma once
 
 
 #include "glm/glm.hpp"
@@ -41,6 +40,3 @@ private:
     const IntersectionDetector* intersectionDetector;
     ReflectionTracer reflectionTracer;
 };
-
-
-#endif //HW3_COLORCALCULATOR_H

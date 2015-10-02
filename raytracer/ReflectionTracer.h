@@ -1,5 +1,5 @@
-#ifndef HW3_REFLECTIONTRACER_H
-#define HW3_REFLECTIONTRACER_H
+#pragma once
+
 
 #include "glm/glm.hpp"
 
@@ -25,6 +25,3 @@ private:
     IntersectionDetector* intersectionDetector;
     ColorCalculator* colorCalculator;
 };
-
-
-#endif //HW3_REFLECTIONTRACER_H

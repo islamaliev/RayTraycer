@@ -1,5 +1,4 @@
-#ifndef HW3_SCENEDATA_H
-#define HW3_SCENEDATA_H
+#pragma once
 
 
 #include <string>
@@ -38,6 +37,3 @@ struct SceneData {
     std::vector<DirectionalLightData*> directionalLights;
     float attenuation[3];
 };
-
-
-#endif //HW3_SCENEDATA_H

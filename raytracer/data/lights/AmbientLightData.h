@@ -1,5 +1,4 @@
-#ifndef HW3_AMBIENTLIGHTDATA_H
-#define HW3_AMBIENTLIGHTDATA_H
+#pragma once
 
 
 #import "LightData.h"
@@ -9,6 +8,3 @@ struct AmbientLightData : public LightData {
             : LightData(col) {
     }
 };
-
-
-#endif //HW3_AMBIENTLIGHTDATA_H

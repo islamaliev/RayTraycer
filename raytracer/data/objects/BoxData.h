@@ -1,5 +1,4 @@
-#ifndef HW3_BOXDATA_H
-#define HW3_BOXDATA_H
+#pragma once
 
 
 #import "ObjectData.h"
@@ -13,6 +12,3 @@ struct BoxData : public ObjectData {
     float position[3];
     float size;
 };
-
-
-#endif //HW3_BOXDATA_H

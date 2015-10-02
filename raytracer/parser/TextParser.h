@@ -1,5 +1,4 @@
-#ifndef HW3_STRINGPARSER_H
-#define HW3_STRINGPARSER_H
+#pragma once
 
 
 #include <string>
@@ -79,6 +78,3 @@ private:
 
     SceneData* sceneData;
 };
-
-
-#endif //HW3_STRINGPARSER_H

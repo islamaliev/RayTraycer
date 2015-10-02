@@ -1,5 +1,4 @@
-#ifndef HW3_POINTLIGHTDATA_H
-#define HW3_POINTLIGHTDATA_H
+#pragma once
 
 
 #import "LightData.h"
@@ -12,6 +11,3 @@ struct PointLightData : public LightData {
 
     float position[3];
 };
-
-
-#endif //HW3_POINTLIGHTDATA_H

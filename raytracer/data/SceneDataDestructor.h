@@ -1,5 +1,4 @@
-#ifndef HW3_SCENEDATADESTRUCTOR_H
-#define HW3_SCENEDATADESTRUCTOR_H
+#pragma once
 
 
 class SceneData;
@@ -11,6 +10,3 @@ public:
 private:
 
 };
-
-
-#endif //HW3_SCENEDATADESTRUCTOR_H

@@ -1,5 +1,4 @@
-#ifndef HW3_LIGHT_H
-#define HW3_LIGHT_H
+#pragma once
 
 
 #include "glm/glm.hpp"
@@ -16,6 +15,3 @@ public:
     glm::vec4 position;
     glm::vec3 color;
 };
-
-
-#endif //HW3_LIGHT_H

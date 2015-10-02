@@ -1,5 +1,4 @@
-#ifndef HW3_OBJECTDATA_H
-#define HW3_OBJECTDATA_H
+#pragma once
 
 
 #include "glm/glm.hpp"
@@ -16,6 +15,3 @@ struct ObjectData {
 
     MaterialData material;
 };
-
-
-#endif //HW3_OBJECTDATA_H

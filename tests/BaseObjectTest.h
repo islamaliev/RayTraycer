@@ -23,25 +23,28 @@ public:
         transforms.clear();
     }
 
+    void setNewObject(Object* object) {
+        if (this->object) {
+            delete this->object;
+        }
+        this->object = object;
+        transforms.clear();
+    }
+
     void createNewObjectWithCurrentTransform() {
         if (object) {
             delete object;
         }
         object = createObject();
-        object->setTransform(matrix);
     }
 
     void TearDown() override {
         delete object;
     }
 
-    void setObject(Object* object) {
-        this->object = object;
-        transforms.clear();
-    }
-
     void translate(float x, float y, float z) {
-        matrix = glm::translate(matrix, glm::vec3(x, y, z));
+        const glm::mat4& m = glm::translate(glm::mat4(1), glm::vec3(x, y, z));
+        matrix = m * object->getTransform();
         createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "translate(" << x << ", " << y << ", " << z << ")";
@@ -49,7 +52,8 @@ public:
     }
 
     void rotate(float degree, float x, float y, float z) {
-        matrix = glm::rotate(matrix, (double) degree, glm::vec3(x, y, z));
+        const glm::mat4& m = glm::rotate(glm::mat4(1), (double) degree, glm::vec3(x, y, z));
+        matrix = m * object->getTransform();
         createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "rotate(" << degree << "˚, " << x << ", " << y << ", " << z << ")";
@@ -57,7 +61,8 @@ public:
     }
 
     void scale(float x, float y, float z) {
-        matrix = glm::scale(matrix, glm::vec3(x, y, z));
+        const glm::mat4& m = glm::scale(glm::mat4(1), glm::vec3(x, y, z));
+        matrix = m * object->getTransform();
         createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "scale(" << x << ", " << y << ", " << z << ")";

@@ -79,8 +79,8 @@ TEST_F(SphereNormalTest, Scaled) {
 }
 
 TEST_F(SphereNormalTest, RotatedTranslated) {
-    translate(-2, 0, 0);
     rotate(-90, 0, 0, 1);
+    translate(-2, 0, 0);
     assertNormal(-1, 0, 0, 1, 0, 0);
     assertNormal(-3, 0, 0, -1, 0, 0);
     assertNormal(-2, 1, 0, 0, 1, 0);
@@ -88,9 +88,9 @@ TEST_F(SphereNormalTest, RotatedTranslated) {
 }
 
 TEST_F(SphereNormalTest, RotatedScaledTranslated) {
-    translate(0, 2, 0);
-    scale(2, 1, 1);
     rotate(180, 0, 0, 1);
+    scale(2, 1, 1);
+    translate(0, 2, 0);
     assertNormal(1, 2, 0, 1, 0, 0);
     assertNormal(0, 5, 0, 0, 1, 0);
 }

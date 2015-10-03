@@ -8,6 +8,10 @@ public:
         return new Plane(getTransform(), glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), 1, 1, 0);
     }
 
+    void setNewPlane(float posX, float posY, float posZ, float nX, float nY, float nZ) {
+        setNewObject(new Plane(glm::mat4(1), glm::vec3(posX, posY, posZ), glm::vec3(nX, nY, nZ), 1, 1, 0));
+    }
+
     Plane* getPlane() {
         return (Plane*) object;
     }
@@ -70,12 +74,34 @@ TEST_F(PlaneIntersectionTest, ParallelRay) {
 }
 
 TEST_F(PlaneIntersectionTest, ArbitraryRay) {
-    assertIntersection(0.2f, -1.2f, 1.f, 0, 0.7071f, -0.7071f, 1.4142f);
-    assertIntersection(0, 0, 1.f, 0, -0.708f, -0.708f, 0);
+    assertIntersection(0.2f, -1.2f, 1.f, 0,  0.7071f, -0.7071f, 1.4142f);
+    assertIntersection(0,     0,    1.f, 0, -0.708f, - 0.708f,  0);
 }
 
 TEST_F(PlaneIntersectionTest, RotatedPlane) {
     rotate(90, -1, 0, 0);
-    assertIntersection( 0,     0.1f, 1,    0,  0, -1, 0);
-    assertIntersection( 0,     1,    0.1f, 0, -1,  0, 1);
+    assertIntersection( 0, 0.1f, 1,    0,  0, -1, 0);
+    assertIntersection( 0, 1,    0.1f, 0, -1,  0, 1);
+}
+
+TEST_F(PlaneNormalTest, LocalPosition) {
+    setNewPlane(0, -1, 0, 0, 0, 1);
+    assertNormal(0, 0, 1);
+    setNewPlane(1, 0, 2, 0, 0, 1);
+    assertNormal(0, 0, 1);
+}
+
+TEST_F(PlaneNormalTest, LocalNormal) {
+    setNewPlane(0, 0, 0, 1, 0, 0);
+    assertNormal(1, 0, 0);
+    setNewPlane(0, 0, 0, 0, 1, 0);
+    assertNormal(0, 1, 0);
+}
+
+TEST_F(PlaneNormalTest, RotationAndLocalNormal) {
+    setNewPlane(0, 0, 0, 1, 0, 0);
+    rotate(90, 0, 0, 1);
+    assertNormal(0, 1, 0);
+    rotate(45, 1, 0, 0);
+    assertNormal(0, 0.707, 0.707);
 }

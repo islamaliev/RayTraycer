@@ -19,9 +19,20 @@ public:
     virtual Object* createObject() = 0;
 
     void SetUp() override {
+        createNewObjectWithCurrentTransform();
+        transforms.clear();
+    }
+
+    void createNewObjectWithCurrentTransform() {
+        if (object) {
+            delete object;
+        }
         object = createObject();
         object->setTransform(matrix);
-        transforms.clear();
+    }
+
+    void TearDown() override {
+        delete object;
     }
 
     void setObject(Object* object) {
@@ -31,7 +42,7 @@ public:
 
     void translate(float x, float y, float z) {
         matrix = glm::translate(matrix, glm::vec3(x, y, z));
-        object->setTransform(matrix);
+        createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "translate(" << x << ", " << y << ", " << z << ")";
         transforms.push_back(s.str());
@@ -39,7 +50,7 @@ public:
 
     void rotate(float degree, float x, float y, float z) {
         matrix = glm::rotate(matrix, (double) degree, glm::vec3(x, y, z));
-        object->setTransform(matrix);
+        createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "rotate(" << degree << "˚, " << x << ", " << y << ", " << z << ")";
         transforms.push_back(s.str());
@@ -47,7 +58,7 @@ public:
 
     void scale(float x, float y, float z) {
         matrix = glm::scale(matrix, glm::vec3(x, y, z));
-        object->setTransform(matrix);
+        createNewObjectWithCurrentTransform();
         std::stringstream s;
         s << "scale(" << x << ", " << y << ", " << z << ")";
         transforms.push_back(s.str());
@@ -92,6 +103,10 @@ protected:
             s = " | transorms: " + s.substr(0, s.size() - 2);
         }
         return s;
+    }
+
+    const glm::mat4& getTransform() {
+        return matrix;
     }
 
 private:

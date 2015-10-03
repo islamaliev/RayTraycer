@@ -4,7 +4,7 @@
 class SphereTest : public BaseObjectTest {
 public:
     Object* createObject() override {
-        return new Sphere(glm::mat4(1), glm::vec3(), 1);
+        return new Sphere(getTransform(), glm::vec3(), 1);
     }
 
     Sphere* getSphere() {

@@ -9,7 +9,7 @@ const glm::vec3 V3 = glm::vec3(1, -1, 0);
 class TriangleTest : public BaseObjectTest {
 public:
     Object* createObject() override {
-        return new Triangle(glm::mat4(1), &V1, &V2, &V3);
+        return new Triangle(getTransform(), &V1, &V2, &V3);
     };
 
     Triangle* getTriangle() {

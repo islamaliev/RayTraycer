@@ -5,10 +5,7 @@
 
 class Box : public Object {
 public:
-    Box(const glm::vec3& pos, float size)
-        : position(pos, 1)
-        , size(size)
-    {}
+    Box(const glm::mat4& m, const glm::vec3& pos, float size);
 
     double intersect(const Ray* ray) const override;
 

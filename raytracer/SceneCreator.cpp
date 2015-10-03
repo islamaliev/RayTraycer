@@ -73,14 +73,14 @@ void SceneCreator::initializeTriangles() {
         const glm::vec3& v1 = scene->verticies[data->indecies[0]];
         const glm::vec3& v2 = scene->verticies[data->indecies[1]];
         const glm::vec3& v3 = scene->verticies[data->indecies[2]];
-        processAndAdd(data, new Triangle(&v1, &v2, &v3));
+        processAndAdd(data, new Triangle(data->transform, &v1, &v2, &v3));
     }
 }
 
 void SceneCreator::initializeSpheres() {
     for (auto it = sceneData->spheres.begin(); it != sceneData->spheres.end(); it++) {
         SphereData* const& data = *it;
-        Sphere* sphere = new Sphere(glm::vec3(data->position[0], data->position[1], data->position[2]), data->radius);
+        Sphere* sphere = new Sphere(data->transform, glm::vec3(data->position[0], data->position[1], data->position[2]), data->radius);
         processAndAdd(data, sphere);
     }
 }
@@ -88,7 +88,7 @@ void SceneCreator::initializeSpheres() {
 void SceneCreator::initializePlanes() {
     for (auto it = sceneData->planes.begin(); it != sceneData->planes.end(); it++) {
         PlaneData* const& data = *it;
-        Plane* plane = new Plane(glm::vec3(data->position[0], data->position[1], data->position[2]),
+        Plane* plane = new Plane(data->transform, glm::vec3(data->position[0], data->position[1], data->position[2]),
                 glm::vec3(data->normal[0], data->normal[1], data->normal[2]), data->w, data->h, data->rotation);
         processAndAdd(data, plane);
     }
@@ -97,13 +97,12 @@ void SceneCreator::initializePlanes() {
 void SceneCreator::initializeBoxes() {
     for (auto it = sceneData->boxes.begin(); it != sceneData->boxes.end(); it++) {
         BoxData* const& data = *it;
-        Box* box = new Box(glm::vec3(data->position[0], data->position[1], data->position[2]), data->size);
+        Box* box = new Box(data->transform, glm::vec3(data->position[0], data->position[1], data->position[2]), data->size);
         processAndAdd(data, box);
     }
 }
 
 void SceneCreator::processAndAdd(ObjectData* data, Object* object) const {
-    object->setTransform(data->transform);
     object->ambient = glm::vec3(data->ambient[0], data->ambient[1], data->ambient[2]);
     object->emission = glm::vec3(data->material.emission[0], data->material.emission[1], data->material.emission[2]);
     object->diffuse = glm::vec3(data->material.diffuse[0], data->material.diffuse[1], data->material.diffuse[2]);

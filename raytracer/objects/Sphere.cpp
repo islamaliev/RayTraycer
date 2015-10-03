@@ -1,6 +1,11 @@
 #include "Sphere.h"
 #include "Ray.h"
 
+Sphere::Sphere(const glm::mat4& m, const glm::vec3& pos, float radius)
+        : Object(m)
+        , position(pos, 1)
+        , radius(radius) {}
+
 double Sphere::intersect(const Ray* ray) const {
     // a * t ^ 2 + b * t + c = 0
     // t ^ 2 * (P1 * P1) + 2 * t * P1 * (P0 - C) + (P0 - C) * (P0 - C) - r ^ 2 = 0

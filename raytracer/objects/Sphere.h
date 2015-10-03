@@ -5,10 +5,7 @@
 
 class Sphere : public Object {
 public:
-    Sphere(const glm::vec3& pos, float radius)
-        : position(pos, 1)
-        , radius(radius)
-    {}
+    Sphere(const glm::mat4& m, const glm::vec3& pos, float radius);
 
     double intersect(const Ray* ray) const override;
 

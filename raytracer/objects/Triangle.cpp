@@ -2,35 +2,39 @@
 #include "Triangle.h"
 #include "Ray.h"
 
-Triangle::Triangle(const vec3* v1, const vec3* v2, const vec3* v3) {
+Triangle::Triangle(const glm::mat4& m, const vec3* v1, const vec3* v2, const vec3* v3)
+    : Object(m) {
     verticies.push_back(v1);
     verticies.push_back(v2);
     verticies.push_back(v3);
+
+    const vec3& side1(*verticies[1] - *verticies[0]);
+    const vec3& side2(*verticies[2] - *verticies[0]);
+    localNormal = vec4(glm::normalize(glm::cross(side1, side2)), 0);
+
+    const vec3& transformedNormal = vec3(glm::transpose(getInverseTransform()) * localNormal);
+    normal = glm::normalize(transformedNormal);
 }
 
 double Triangle::intersect(const Ray* ray) const {
     const mat4& invM = getInverseTransform();
 
-    vec4 rayPos = invM * ray->pos;
-    vec4 rayDir = invM * ray->dir;
+    vec4 localRayPos = invM * ray->pos;
+    vec4 localRayDir = invM * ray->dir;
 
-    const vec3& side1(*verticies[1] - *verticies[0]);
-    const vec3& side2(*verticies[2] - *verticies[0]);
-    const vec4& n = glm::normalize(vec4(glm::cross(side1, side2), 0));
-
-    double d = glm::dot(rayDir, n);
+    double d = glm::dot(localRayDir, localNormal);
     if (d == 0) {
         return 0;
     }
 
     vec4 a(*verticies[0], 0);
 
-    double t = (glm::dot(a, n) - glm::dot(rayPos, n)) / d;
+    double t = (glm::dot(a, localNormal) - glm::dot(localRayPos, localNormal)) / d;
     if (t < 0) {
         return 0;
     }
 
-    vec4 p(rayPos + (rayDir * t));
+    vec4 p(localRayPos + (localRayDir * t));
     if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))
     {
         p = ray->pos - getTransform() * p;
@@ -59,14 +63,5 @@ bool Triangle::isPointInTriangle(const vec3& p, const vec3& a, const vec3& b, co
 }
 
 glm::vec3 Triangle::getNormal(const glm::vec4& point) const {
-    if (hasNormal) {
-        return normal;
-    }
-    const vec3& side1(*verticies[1] - *verticies[0]);
-    const vec3& side2(*verticies[2] - *verticies[0]);
-    const vec3& n = glm::normalize(glm::cross(side1, side2));
-    const vec3& transformedNormal = vec3(glm::transpose(getInverseTransform()) * vec4(n, 0));
-    normal = glm::normalize(transformedNormal);
-    hasNormal = true;
     return normal;
 }

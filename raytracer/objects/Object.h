@@ -7,10 +7,7 @@ class Ray;
 
 class Object {
 public:
-    Object()
-        : transform(1.f)
-        , inverseTransform(1.f)
-    {}
+    Object(const glm::mat4& m);
 
     virtual ~Object() {};
 

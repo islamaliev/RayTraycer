@@ -2,6 +2,8 @@
 #include "Ray.h"
 #include "glm/gtc/matrix_transform.hpp"
 
+const glm::vec3 Plane::DEFAULT_NORMAL = glm::vec3(0, 0, 1);
+
 Plane::Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w, float h, float rotation)
     : Object(m)
     , position(pos, 1)
@@ -9,20 +11,15 @@ Plane::Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w
     , w(w)
     , h(h)
     , rotation(rotation) {
-    double dot = glm::dot(vec3(0, 0, 1), vec3(localNormal));
+    double dot = glm::dot(DEFAULT_NORMAL, vec3(localNormal));
     if (dot != 1)
     {
-        mat4 tr = getTransform();
-        vec3 rotAxis = glm::cross(vec3(0, 0, 1), vec3(localNormal));
+        const vec3& rotAxis = glm::cross(DEFAULT_NORMAL, vec3(localNormal));
         double angle = acos(dot);
-        mat4 rotM = glm::rotate(mat4(1), angle * 180 / M_PI, rotAxis);
-
-        setTransform(glm::rotate(tr, angle * 180 / M_PI, rotAxis));
+        setTransform(glm::rotate(getTransform(), angle * 180 / M_PI, rotAxis));
     }
-    vec3 transformedNormal = vec3(glm::transpose(getInverseTransform()) * localNormal);
-    normal = glm::normalize(transformedNormal);
-//    const vec3& transformedNormal = vec3(getTransform() * localNormal);
-//    normal = glm::normalize(vec3(localNormal));
+    const vec4& transformedNormal = getTransform() * vec4(DEFAULT_NORMAL, 0);
+    normal = glm::normalize(vec3(transformedNormal));
 }
 
 double Plane::intersect(const Ray* ray) const {

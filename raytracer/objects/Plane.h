@@ -5,6 +5,8 @@
 
 class Plane : public Object {
 public:
+    static const glm::vec3 DEFAULT_NORMAL;
+
     Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w, float h, float rotation);
 
     double intersect(const Ray* ray) const override;

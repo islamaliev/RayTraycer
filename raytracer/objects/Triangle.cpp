@@ -19,11 +19,11 @@ Triangle::Triangle(const glm::mat4& m, const vec3* v1, const vec3* v2, const vec
 double Triangle::intersect(const Ray* ray) const {
     const mat4& invM = getInverseTransform();
 
-    vec4 localRayPos = invM * ray->pos;
-    vec4 localRayDir = invM * ray->dir;
+    const vec4& localRayPos = invM * ray->pos;
+    const vec4& localRayDir = invM * ray->dir;
 
     double d = glm::dot(localRayDir, localNormal);
-    if (d == 0) {
+    if (fabs(d) < 0.0001f) {
         return 0;
     }
 
@@ -35,8 +35,7 @@ double Triangle::intersect(const Ray* ray) const {
     }
 
     vec4 p(localRayPos + (localRayDir * t));
-    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))
-    {
+    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1])) {
         p = ray->pos - getTransform() * p;
         return glm::length(p);
     }

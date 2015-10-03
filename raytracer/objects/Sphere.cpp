@@ -15,8 +15,8 @@ double Sphere::intersect(const Ray* ray) const {
     // D = b ^ 2 - 4 * a * c
     const mat4& invM = getInverseTransform();
 
-    vec4 rayPos = invM * ray->pos;
-    vec4 rayDir = invM * ray->dir;
+    const vec4& rayPos = invM * ray->pos;
+    const vec4& rayDir = invM * ray->dir;
 
     glm::vec4 diff = rayPos - position;
     double a = glm::dot(rayDir, rayDir);

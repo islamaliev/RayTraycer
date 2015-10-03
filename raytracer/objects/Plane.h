@@ -14,12 +14,15 @@ public:
     glm::vec3 getNormal(const glm::vec4& point) const override;
 
     glm::vec4 position;
-    glm::vec4 localNormal;
     float w;
     float h;
     float rotation;
     glm::vec3 normal;
 
 private:
+    static const glm::vec4 DEFAULT_NORMAL_4;
+
+    void init(const glm::vec3& pos, const glm::vec3& norm);
+
     bool isPointInBounds(const glm::vec4& p) const;
 };

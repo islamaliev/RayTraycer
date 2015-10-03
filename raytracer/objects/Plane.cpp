@@ -3,21 +3,29 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 const glm::vec3 Plane::DEFAULT_NORMAL = glm::vec3(0, 0, 1);
+const glm::vec4 Plane::DEFAULT_NORMAL_4 = glm::vec4(DEFAULT_NORMAL, 0);
 
 Plane::Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w, float h, float rotation)
     : Object(m)
     , position(pos, 1)
-    , localNormal(vec4(glm::normalize(norm), 0))
     , w(w)
     , h(h)
     , rotation(rotation) {
-    double dot = glm::dot(DEFAULT_NORMAL, vec3(localNormal));
-    if (dot != 1)
-    {
-        const vec3& rotAxis = glm::cross(DEFAULT_NORMAL, vec3(localNormal));
-        double angle = acos(dot);
-        setTransform(glm::rotate(getTransform(), angle * 180 / M_PI, rotAxis));
+    init(pos, norm);
+}
+
+void Plane::init(const glm::vec3& pos, const glm::vec3& norm) {
+    const glm::vec3& localNormal = glm::normalize(norm);
+    double dot = glm::dot(DEFAULT_NORMAL, localNormal);
+    glm::mat4 matrix = glm::translate(getTransform(), pos);
+    if (dot != 1) {
+        const vec3& rotAxis = glm::cross(DEFAULT_NORMAL, localNormal);
+        matrix = glm::rotate(matrix, acos(dot) * 180 / M_PI, rotAxis);
     }
+    if (rotation != 0) {
+        matrix = glm::rotate(matrix, (double) rotation, DEFAULT_NORMAL);
+    }
+    setTransform(matrix);
     const vec4& transformedNormal = getTransform() * vec4(DEFAULT_NORMAL, 0);
     normal = glm::normalize(vec3(transformedNormal));
 }
@@ -25,42 +33,23 @@ Plane::Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w
 double Plane::intersect(const Ray* ray) const {
     const mat4& invM = getInverseTransform();
 
-    vec4 localRayPos = invM * ray->pos;
-    vec4 localRayDir = invM * ray->dir;
+    const vec4& localRayPos = invM * ray->pos;
+    const vec4& localRayDir = invM * ray->dir;
 
-    double d = glm::dot(localRayDir, localNormal);
-    if (d == 0) {
+    double d = glm::dot(DEFAULT_NORMAL_4, localRayDir);
+    if (fabs(d) < 0.0001f) {
         return 0;
     }
-
-    vec4 p0l0 = position - localRayPos;
-    double t = glm::dot(p0l0, localNormal) / d;
-    if (t <= 0) {
-        return 0;
-    }
-
-    vec4 p(localRayPos + localRayDir * t);
-    if (isPointInBounds(p)) {
-        p = ray->pos - getTransform() * p;
-        return glm::length(p);
-    }
-
-    return 0;
-
-    /*vec4 a(*verticies[0], 0);
-
-    double t = (glm::dot(a, localNormal) - glm::dot(localRayPos, localNormal)) / d;
+    double t = glm::dot(position - localRayPos, DEFAULT_NORMAL_4) / d;
     if (t < 0) {
         return 0;
     }
 
     vec4 p(localRayPos + (localRayDir * t));
-    if (isPointInTriangle(vec3(p), *verticies[0], *verticies[2], *verticies[1]))
-    {
+    if (isPointInBounds(p)) {
         p = ray->pos - getTransform() * p;
         return glm::length(p);
-    }*/
-
+    }
 
     return 0;
 }
@@ -70,8 +59,7 @@ glm::vec3 Plane::getNormal(const glm::vec4& point) const {
 }
 
 bool Plane::isPointInBounds(const glm::vec4& p) const {
-    double angle = rotation * M_PI / 360.0;
-    double x = p.x + w / 2;// * cos(angle);
-    double y = p.y + h / 2;// * -sin(angle);
+    double x = p.x + w * 0.5;
+    double y = p.y + h * 0.5;
     return (x >= 0 && x <= w && y >= 0 && y <= h);
 }

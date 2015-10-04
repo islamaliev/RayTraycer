@@ -2,10 +2,11 @@
 
 
 #include "glm/glm.hpp"
+#include "Color.h"
 
 class Light {
 public:
-    Light(const glm::vec4& pos, const glm::vec3& col)
+    Light(const glm::vec4& pos, const Color& col)
         : position(pos)
         , color(col) {
     }
@@ -21,5 +22,5 @@ public:
     virtual bool isCloserTo(const glm::vec4& point, const double& distance, const double& lightDistance) const = 0;
 
     glm::vec4 position;
-    glm::vec3 color;
+    Color color;
 };

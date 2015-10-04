@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "PointLight.h"
 
-PointLight::PointLight(const glm::vec3& pos, const glm::vec3& col, float attn[3])
+PointLight::PointLight(const glm::vec3& pos, const Color& col, float attn[3])
     : Light(glm::vec4(pos, 1), col) {
     std::copy(attn, attn + 3, attenuation);
 }

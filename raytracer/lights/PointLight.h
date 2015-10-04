@@ -5,7 +5,7 @@
 
 class PointLight : public Light {
 public:
-    PointLight(const glm::vec3& pos, const glm::vec3& col, float attn[3]);
+    PointLight(const glm::vec3& pos, const Color& col, float attn[3]);
 
     glm::vec3 getDirectionTo(const glm::vec4& point) const override;
 

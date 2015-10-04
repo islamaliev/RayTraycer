@@ -2,6 +2,7 @@
 
 
 #include "glm/glm.hpp"
+#include "Color.h"
 
 class Ray;
 
@@ -20,10 +21,10 @@ public:
 
     const glm::mat4& getInverseTransform() const { return inverseTransform; }
 
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    glm::vec3 emission;
+    Color ambient;
+    Color diffuse;
+    Color specular;
+    Color emission;
     float shininess;
 
 protected:

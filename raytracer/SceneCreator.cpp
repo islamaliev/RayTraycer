@@ -44,14 +44,14 @@ void SceneCreator::initializeCamera() {
 void SceneCreator::initializeLights() {
     for (auto it = sceneData->pointLights.begin(); it != sceneData->pointLights.end(); it++) {
         PointLightData* data = *it;
-        glm::vec3 color(data->color[0], data->color[1], data->color[2]);
+        Color color(data->color[0], data->color[1], data->color[2]);
         glm::vec3 position(data->position[0], data->position[1], data->position[2]);
         PointLight* light = new PointLight(position, color, data->attenuation);
         scene->lights.push_back(light);
     }
     for (auto it = sceneData->directionalLights.begin(); it != sceneData->directionalLights.end(); it++) {
         DirectionalLightData* data = *it;
-        glm::vec3 color(data->color[0], data->color[1], data->color[2]);
+        Color color(data->color[0], data->color[1], data->color[2]);
         glm::vec3 position(data->direction[0], data->direction[1], data->direction[2]);
         DirectionalLight* light = new DirectionalLight(position, color);
         scene->lights.push_back(light);
@@ -102,10 +102,10 @@ void SceneCreator::initializeBoxes() {
 }
 
 void SceneCreator::processAndAdd(ObjectData* data, Object* object) const {
-    object->ambient = glm::vec3(data->ambient[0], data->ambient[1], data->ambient[2]);
-    object->emission = glm::vec3(data->material.emission[0], data->material.emission[1], data->material.emission[2]);
-    object->diffuse = glm::vec3(data->material.diffuse[0], data->material.diffuse[1], data->material.diffuse[2]);
-    object->specular = glm::vec3(data->material.specular[0], data->material.specular[1], data->material.specular[2]);
+    object->ambient = Color(data->ambient[0], data->ambient[1], data->ambient[2]);
+    object->emission = Color(data->material.emission[0], data->material.emission[1], data->material.emission[2]);
+    object->diffuse = Color(data->material.diffuse[0], data->material.diffuse[1], data->material.diffuse[2]);
+    object->specular = Color(data->material.specular[0], data->material.specular[1], data->material.specular[2]);
     object->shininess = data->material.shininess;
     scene->objects.push_back(object);
 }

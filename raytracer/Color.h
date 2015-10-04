@@ -23,9 +23,6 @@ public:
         value = glm::vec3(r, g , b);
     }
 
-    Color(glm::vec3 vec)
-        : value(vec) {}
-
     double r() const {
         return value.r;
     }
@@ -84,7 +81,16 @@ public:
         return result;
     }
 
+    void clamp() {
+        if (value.r > 1) value.r = 1;
+        if (value.g > 1) value.g = 1;
+        if (value.b > 1) value.b = 1;
+    }
+
 private:
+    explicit Color(glm::vec3 vec)
+        : value(vec) {}
+
     glm::vec3 value;
 
     friend Color operator+(const Color& lhs, const double& scalar);

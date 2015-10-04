@@ -138,3 +138,9 @@ TEST_F(ColorTest, IntegerConstructor) {
     color = Color(255);
     assertColor(0, 0, 1);
 }
+
+TEST_F(ColorTest, Clamp) {
+    color = Color(0.3, 1.6, 3);
+    color.clamp();
+    assertColor(0.3, 1, 1);
+}

@@ -25,8 +25,6 @@ struct SceneData {
 
     CameraData camera;
 
-    int maxVerticies;
-    int maxVertNorms;
     std::vector<glm::vec3> verticies;
     std::vector<TriangleData*> triangles;
     std::vector<SphereData*> spheres;

@@ -76,8 +76,6 @@ void TextParser::initInstructionsMap() {
     instructionsMap["sphere"] = &TextParser::parseSphere;
     instructionsMap["plane"] = &TextParser::parsePlane;
     instructionsMap["box"] = &TextParser::parseBox;
-    instructionsMap["maxverts"] = &TextParser::parseMaxverts;
-    instructionsMap["maxvertnorms"] = &TextParser::parseMaxvertnorms;
     instructionsMap["vertex"] = &TextParser::parseVertex;
     instructionsMap["vertexnormal"] = &TextParser::parseVertexnormal;
     instructionsMap["tri"] = &TextParser::parseTri;
@@ -147,16 +145,6 @@ void TextParser::parseBox(std::stringstream& s) {
     BoxData* box = new BoxData(values, values[3]);
     addObjectsData(box);
     sceneData->boxes.push_back(box);
-}
-
-void TextParser::parseMaxverts(std::stringstream& s) {
-    readValues(s, 1);
-    sceneData->maxVerticies = (int) values[0];
-}
-
-void TextParser::parseMaxvertnorms(std::stringstream& s) {
-    readValues(s, 1);
-    sceneData->maxVertNorms = (int) values[0];
 }
 
 void TextParser::parseVertex(std::stringstream& s) {

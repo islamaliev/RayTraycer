@@ -7,6 +7,7 @@ class Scene;
 class Intersection;
 class IntersectionDetector;
 class ColorCalculator;
+class Color;
 
 class ReflectionTracer {
 public:
@@ -16,7 +17,7 @@ public:
         , colorCalculator(colorCalculator) {
     }
 
-    unsigned findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth = 0) const;
+    Color findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth = 0) const;
 
 private:
     typedef glm::vec3 vec3;

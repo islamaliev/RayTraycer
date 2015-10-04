@@ -12,6 +12,7 @@ class Object;
 class ProgressReporter;
 class IntersectionDetector;
 class ColorCalculator;
+class Color;
 
 class RayTracer {
 public:
@@ -28,7 +29,7 @@ private:
 
     Ray* getRayThoughPixel(const Camera* camera, double x, double y) const;
 
-    void pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const;
+    void pushColor(Image* image, const Color& color, unsigned int x, unsigned int y) const;
 
     unsigned w;
     unsigned h;

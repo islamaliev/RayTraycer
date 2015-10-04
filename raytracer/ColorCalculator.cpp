@@ -38,7 +38,7 @@ void ColorCalculator::contributeLight(Color& color, const Light* light, const In
     }
 }
 
-unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const {
+Color ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const {
     if (intersection->dist <= 0) {
         delete intersection;
         return 0;
@@ -62,10 +62,8 @@ unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned d
 }
 
 void ColorCalculator::contributeReflection(Color& color, const Intersection* intersection, const glm::vec3& normal, unsigned depth) const {
-    unsigned reflectedColor = reflectionTracer.findColor(intersection, normal, depth);
-    if (reflectedColor != 0) {
-        color += Color(reflectedColor) * intersection->object->specular;
-    }
+    const Color& reflectedColor = reflectionTracer.findColor(intersection, normal, depth);
+    color += reflectedColor * intersection->object->specular;
 }
 
 bool ColorCalculator::isLit(const glm::vec4& point, const Light* light, const glm::vec3& lightDir, const double& lightDistance) const {

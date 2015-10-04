@@ -35,6 +35,18 @@ public:
         return value.b;
     }
 
+    unsigned char R() const {
+        return (unsigned char) (value.r * BYTE_MASK);
+    }
+
+    unsigned char G() const {
+        return (unsigned char) (value.g * BYTE_MASK);
+    }
+
+    unsigned char B() const {
+        return (unsigned char) (value.b * BYTE_MASK);
+    }
+
     Color operator+(const Color& rhs) const {
         return Color(value + rhs.value);
     }

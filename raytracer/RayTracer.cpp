@@ -17,7 +17,7 @@ void RayTracer::raytraceArea(unsigned index, unsigned count, Image* image) const
         x = i - y * w;
         Ray* ray = getRayThoughPixel(scene->camera, x + 0.5f, y + 0.5f);
         Intersection* intersection = intersectionDetector->getIntersection(ray);
-        unsigned color = colorCalculator->calculate(intersection);
+        const Color& color = colorCalculator->calculate(intersection);
         pushColor(image, color, x, y);
         progressReporter->handleProgress(x, y);
     }
@@ -77,11 +77,11 @@ Ray* RayTracer::getRayThoughPixel(const Camera* camera, double x, double y) cons
     return ray;
 }
 
-void RayTracer::pushColor(Image* image, unsigned int color, unsigned int x, unsigned int y) const {
-    const unsigned int i = y * 3 * w + x * 3;
-    image->data[i + 0] = (unsigned char) (color & 0xFF);
-    image->data[i + 1] = (unsigned char) (color >> 8 & 0xFF);
-    image->data[i + 2] = (unsigned char) (color >> 16 & 0xFF);
+void RayTracer::pushColor(Image* image, const Color& color, unsigned x, unsigned y) const {
+    unsigned i(y * 3 * w + x * 3);
+    image->data[i + 0] = color.B();
+    image->data[i + 1] = color.G();
+    image->data[i + 2] = color.R();
 }
 
 void RayTracer::init() {

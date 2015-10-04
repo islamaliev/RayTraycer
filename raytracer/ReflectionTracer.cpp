@@ -1,14 +1,14 @@
 #include "ReflectionTracer.h"
 #include "Intersection.h"
-#include "Ray.h"
 #include "IntersectionDetector.h"
 #include "ColorCalculator.h"
 #include "Scene.h"
 #include "RayGenerator.h"
+#include "Color.h"
 
-unsigned ReflectionTracer::findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth) const {
+Color ReflectionTracer::findColor(const Intersection* const intersection, const glm::vec3& normal, unsigned depth) const {
     if (++depth > scene->maxDepth) {
-        return 0;
+        return Color();
     }
     const vec3& l = -vec3(intersection->ray->dir);
     double nDot(glm::dot(l, normal));

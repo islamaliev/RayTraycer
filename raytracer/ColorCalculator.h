@@ -23,7 +23,7 @@ public:
         intersectionDetector = nullptr;
     }
 
-    unsigned calculate(const Intersection* intersection, unsigned depth = 0) const;
+    Color calculate(const Intersection* intersection, unsigned depth = 0) const;
 
 private:
     typedef glm::vec3 vec3;

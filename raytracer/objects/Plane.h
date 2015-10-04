@@ -13,7 +13,6 @@ public:
 
     glm::vec3 getNormal(const glm::vec4& point) const override;
 
-    glm::vec4 position;
     float w;
     float h;
     float rotation;

@@ -7,7 +7,6 @@ const glm::vec4 Plane::DEFAULT_NORMAL_4 = glm::vec4(DEFAULT_NORMAL, 0);
 
 Plane::Plane(const mat4& m, const glm::vec3& pos, const glm::vec3& norm, float w, float h, float rotation)
     : Object(m)
-    , position(pos, 1)
     , w(w)
     , h(h)
     , rotation(rotation) {
@@ -40,7 +39,7 @@ double Plane::intersect(const Ray* ray) const {
     if (fabs(d) < 0.0001f) {
         return 0;
     }
-    double t = glm::dot(position - localRayPos, DEFAULT_NORMAL_4) / d;
+    double t = glm::dot(-localRayPos, DEFAULT_NORMAL_4) / d;
     if (t < 0) {
         return 0;
     }

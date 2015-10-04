@@ -1,13 +1,11 @@
 #include "ColorCalculator.h"
 #include "Intersection.h"
 #include "Scene.h"
-#include "Ray.h"
 #include "Light.h"
 #include "Object.h"
 #include "Camera.h"
 #include "IntersectionDetector.h"
 #include "RayGenerator.h"
-#include "PointLight.h"
 
 glm::vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
         const vec3& diffuse, const vec3& specular, float shininess) const {
@@ -26,6 +24,20 @@ glm::vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& light
     return lambert + phong;
 }
 
+void ColorCalculator::contributeLight(glm::vec3& color, const Light* light, const Intersection* intersection, const glm::vec3& normal) const {
+    const Object* obj = intersection->object;
+    vec3 lightDir(light->getDirectionTo(intersection->point));
+    double lightDistance(light->getDistanceTo(intersection->point));
+
+    if (isLit(intersection->point, light, lightDir, lightDistance)) {
+        vec3 eye(-vec3(intersection->ray->dir));
+        vec3 half(glm::normalize(lightDir + eye));
+        vec3 lightColor(computeLight(lightDir, light->color, normal, half, obj->diffuse, obj->specular, obj->shininess));
+
+        color += lightColor / light->getFalloffAt(lightDistance);
+    }
+}
+
 unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned depth) const {
     if (intersection->dist <= 0) {
         delete intersection;
@@ -33,40 +45,29 @@ unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned d
     }
 
     const Object* obj = intersection->object;
-    vec3 finalcolor = obj->ambient + obj->emission;
+    vec3 finalColor = obj->ambient + obj->emission;
 
     const vec3& normal = obj->getNormal(intersection->point);
 
-    vec3 lightDir;
-    double lightDistance;
     for (auto it = scene->lights.begin(); it != scene->lights.end(); it++) {
-        Light* light = *it;
-
-        if (isLit(intersection->point, light, lightDir, lightDistance)) {
-            vec3 eye = -vec3(intersection->ray->dir);
-            vec3 half = glm::normalize(lightDir + eye);
-            vec3 lightColor = computeLight(lightDir, light->color, normal, half, obj->diffuse, obj->specular, obj->shininess);
-            if (light->position.w == 1) {
-                PointLight* pointLight = (PointLight*) light;
-                const double* att = pointLight->attenuation;
-                double attenuation(att[0] + att[1] * lightDistance + att[2] * lightDistance * lightDistance);
-                lightColor /= attenuation;
-            }
-            finalcolor += lightColor;
-        }
-
+        contributeLight(finalColor, *it, intersection, normal);
     }
-    unsigned reflectedColor = reflectionTracer.findColor(intersection, normal, depth);
-    if (reflectedColor != 0) {
-        finalcolor += convertToVec(reflectedColor) * obj->specular;
-    }
+
+    contributeReflection(finalColor, intersection, normal, depth);
 
     delete intersection;
 
-    if (finalcolor.r > 1) finalcolor.r = 1;
-    if (finalcolor.g > 1) finalcolor.g = 1;
-    if (finalcolor.b > 1) finalcolor.b = 1;
-    return convertToInt(finalcolor);
+    if (finalColor.r > 1) finalColor.r = 1;
+    if (finalColor.g > 1) finalColor.g = 1;
+    if (finalColor.b > 1) finalColor.b = 1;
+    return convertToInt(finalColor);
+}
+
+void ColorCalculator::contributeReflection(glm::vec3& color, const Intersection* intersection, const glm::vec3& normal, unsigned depth) const {
+    unsigned reflectedColor = reflectionTracer.findColor(intersection, normal, depth);
+    if (reflectedColor != 0) {
+        color += convertToVec(reflectedColor) * intersection->object->specular;
+    }
 }
 
 glm::vec3 ColorCalculator::convertToVec(unsigned color) const {
@@ -77,7 +78,7 @@ glm::vec3 ColorCalculator::convertToVec(unsigned color) const {
     g /= (float) mask;
     float r = color >> 16 & mask;
     r /= (float) mask;
-    return vec3(r, g , b);
+    return glm::vec3(r, g , b);
 }
 
 unsigned ColorCalculator::convertToInt(const glm::vec3& color) const {
@@ -91,26 +92,10 @@ unsigned ColorCalculator::convertToInt(const glm::vec3& color) const {
     return result;
 }
 
-bool ColorCalculator::isLit(const glm::vec4& point, Light* light, glm::vec3& lightDir, double& lightDistance) const {
-    if (light->position.w == 0) {
-        lightDir = vec3(light->position);
-    } else {
-        lightDir = glm::normalize(vec3(light->position - point));
-    }
-
+bool ColorCalculator::isLit(const glm::vec4& point, const Light* light, const glm::vec3& lightDir, const double& lightDistance) const {
     Ray* ray = RayGenerator().generate(point, lightDir);
-
     Intersection* lightIntersection = intersectionDetector->getIntersection(ray);
     const double& distToIntersection = lightIntersection->dist;
-    bool returnValue(true);
-    if (light->position.w == 1) {
-        lightDistance = glm::length(vec3(light->position - point));
-        if (distToIntersection != 0 && distToIntersection < lightDistance) {
-            returnValue = false;
-        }
-    } else if (distToIntersection > 0) {
-        returnValue = false;
-    }
     delete lightIntersection;
-    return returnValue;
+    return light->isCloserTo(point, distToIntersection, lightDistance);
 }

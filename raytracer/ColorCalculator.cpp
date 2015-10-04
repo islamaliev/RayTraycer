@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "IntersectionDetector.h"
 #include "RayGenerator.h"
+#include "PointLight.h"
 
 glm::vec3 ColorCalculator::computeLight(const vec3& direction, const vec3& lightColor, const vec3& normal, const vec3& half,
         const vec3& diffuse, const vec3& specular, float shininess) const {
@@ -46,7 +47,8 @@ unsigned ColorCalculator::calculate(const Intersection* intersection, unsigned d
             vec3 half = glm::normalize(lightDir + eye);
             vec3 lightColor = computeLight(lightDir, light->color, normal, half, obj->diffuse, obj->specular, obj->shininess);
             if (light->position.w == 1) {
-                const double* att = scene->attenuation;
+                PointLight* pointLight = (PointLight*) light;
+                const double* att = pointLight->attenuation;
                 double attenuation(att[0] + att[1] * lightDistance + att[2] * lightDistance * lightDistance);
                 lightColor /= attenuation;
             }

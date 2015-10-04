@@ -17,6 +17,7 @@ public:
         ambient[0] = 0.2f;
         ambient[1] = 0.2f;
         ambient[2] = 0.2f;
+        attenuation[0] = 1;
     }
 
     ~TextParser() {
@@ -73,6 +74,7 @@ private:
     float values[10];
     std::stack<mat4> transforms;
     float ambient[3];
+    float attenuation[3];
     std::unordered_map<std::string, ParseFunc> instructionsMap;
     MaterialData material;
 

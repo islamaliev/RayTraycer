@@ -16,7 +16,6 @@ class DirectionalLightData;
 struct SceneData {
     SceneData()
         : maxDepth(5) {
-        attenuation[0] = 1;
     }
 
     unsigned width;
@@ -35,5 +34,4 @@ struct SceneData {
     std::vector<PlaneData*> planes;
     std::vector<PointLightData*> pointLights;
     std::vector<DirectionalLightData*> directionalLights;
-    float attenuation[3];
 };

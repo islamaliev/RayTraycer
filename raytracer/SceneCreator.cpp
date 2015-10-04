@@ -46,7 +46,7 @@ void SceneCreator::initializeLights() {
         PointLightData* data = *it;
         glm::vec3 color(data->color[0], data->color[1], data->color[2]);
         glm::vec3 position(data->position[0], data->position[1], data->position[2]);
-        PointLight* light = new PointLight(position, color);
+        PointLight* light = new PointLight(position, color, data->attenuation);
         scene->lights.push_back(light);
     }
     for (auto it = sceneData->directionalLights.begin(); it != sceneData->directionalLights.end(); it++) {
@@ -56,7 +56,6 @@ void SceneCreator::initializeLights() {
         DirectionalLight* light = new DirectionalLight(position, color);
         scene->lights.push_back(light);
     }
-    std::copy(sceneData->attenuation, sceneData->attenuation + 3, scene->attenuation);
 }
 
 void SceneCreator::initializeProperties() {

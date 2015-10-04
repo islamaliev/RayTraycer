@@ -220,13 +220,13 @@ void TextParser::parseDirectional(std::stringstream& s) {
 
 void TextParser::parsePoint(std::stringstream& s) {
     readValues(s, 6);
-    PointLightData* light = new PointLightData(values, values + 3);
+    PointLightData* light = new PointLightData(values, values + 3, attenuation);
     sceneData->pointLights.push_back(light);
 }
 
 void TextParser::parseAttenuation(std::stringstream& s) {
     readValues(s, 3);
-    std::copy(values, values + 3, sceneData->attenuation);
+    std::copy(values, values + 3, attenuation);
 }
 
 void TextParser::parseAmbient(std::stringstream& s) {

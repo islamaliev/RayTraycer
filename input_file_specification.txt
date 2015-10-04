@@ -1,0 +1,38 @@
+# line comments
+
+size width height - size of the output image.
+maxdepth depth - The maximum depth (number of bounces) for a ray (default is 5).
+output filename - The output file to which the image will be written. 
+
+Camera
+
+camera lookfromx lookfromy lookfromz lookatx lookaty lookatz upx upy upz fov - specifies the camera in the standard way. Note that fov stands for the field of view in the y direction.
+
+Geometry
+
+sphere x y z radius - Defines a sphere with a given position and radius.
+plane x y z nx ny nz width length rotation - Defines a plane with given position, normal, size and rotation (about normal).
+vertex x y z - Defines a vertex at the given location. The vertex is put into a pile, starting to be numbered at 0.
+tri v1 v2 v3 - Create a triangle out of the vertices involved (which have previously been specified with the vertex command). The vertices are assumed to be specified in counter-clockwise order. 
+
+Transformations
+
+translate x y z - A translation 3-vector.
+rotate x y z angle - Rotate by angle (in degrees) about the given axis.
+scale x y z - Scale by the corresponding amount in each axis (a non-uniform scaling).
+pushTransform - Push the current modeling transform on the stack. Transformation can contain each other.
+popTransform - Pop the current transform from the stack. The sequence of popTransform and pushTransform can be used if desired before every primitive to reset the transformation.
+
+Lights
+
+directional x y z r g b - The direction to the light source, and the color.
+point x y z r g b - The location of a point source and the color.
+attenuation const linear quadratic - Sets the constant, linear and quadratic attenuations (default 1,0,0). By default there is no attenuation (the constant term is 1, linear and quadratic are 0).
+ambient r g b - The global ambient color to be added for each object (default is .2,.2,.2).
+
+Materials
+
+diffuse r g b - specifies the diffuse color of the surface.
+specular r g b - specifies the specular color of the surface.
+shininess s - specifies the shininess of the surface.
+emission r g b - gives the emissive color of the surface.

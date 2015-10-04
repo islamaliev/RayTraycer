@@ -18,8 +18,12 @@ void Plane::init(const glm::vec3& pos, const glm::vec3& norm) {
     double dot = glm::dot(DEFAULT_NORMAL, localNormal);
     glm::mat4 matrix = glm::translate(getTransform(), pos);
     if (dot != 1) {
-        const vec3& rotAxis = glm::cross(DEFAULT_NORMAL, localNormal);
-        matrix = glm::rotate(matrix, acos(dot) * 180 / M_PI, rotAxis);
+        if (dot != -1) {
+            const vec3& rotAxis = glm::cross(DEFAULT_NORMAL, localNormal);
+            matrix = glm::rotate(matrix, acos(dot) * 180 / M_PI, rotAxis);
+        } else {
+            matrix = glm::rotate(matrix, 180.0, vec3(0, 1, 0));
+        }
     }
     if (rotation != 0) {
         matrix = glm::rotate(matrix, (double) rotation, DEFAULT_NORMAL);
